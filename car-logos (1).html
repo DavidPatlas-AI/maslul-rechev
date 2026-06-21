@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>סמלי הרכבים בעולם · גלריה ומבחן</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;900&family=Heebo:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a0c10;--plate:#1c2128;--line:#2b313b;--txt:#e7ecf3;--muted:#8b95a4;
+    --chrome1:#f4f7fb;--chrome2:#9aa6b6;--chrome3:#5b6675;
+    --gold:#d9b25c;--steel:#7fa8e0;--green:#5fbf8a;
+    --ok:#3ecf8e;--bad:#e2566a;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:"Heebo",sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;overflow-x:hidden;position:relative}
+  body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+    background:radial-gradient(1100px 600px at 50% -8%,rgba(217,178,92,.10),transparent 60%),
+      radial-gradient(900px 700px at 12% 20%,rgba(60,110,200,.10),transparent 55%),
+      radial-gradient(900px 700px at 88% 30%,rgba(120,60,160,.08),transparent 55%);}
+  body::after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.5;
+    background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
+    background-size:54px 54px;-webkit-mask-image:radial-gradient(ellipse 80% 70% at 50% 0%,#000 30%,transparent 80%);mask-image:radial-gradient(ellipse 80% 70% at 50% 0%,#000 30%,transparent 80%);}
+  .wrap{position:relative;z-index:1;max-width:1280px;margin:0 auto;padding:0 22px 90px}
+
+  header{text-align:center;padding:64px 0 24px}
+  .eyebrow{font-family:"Archivo";font-weight:700;letter-spacing:.5em;font-size:12px;color:var(--gold);text-transform:uppercase;opacity:0;animation:rise .8s .05s forwards}
+  h1{font-weight:900;font-size:clamp(36px,8vw,72px);line-height:1.02;margin:14px 0 6px;
+    background:linear-gradient(180deg,var(--chrome1),var(--chrome2) 48%,var(--chrome3));-webkit-background-clip:text;background-clip:text;color:transparent;opacity:0;animation:rise .8s .12s forwards}
+  .sub{color:var(--muted);font-size:clamp(15px,3.6vw,19px);font-weight:300;opacity:0;animation:rise .8s .2s forwards}
+  .sub b{color:var(--txt);font-weight:700}
+
+  .quizBtn{margin:24px auto 0;display:inline-flex;align-items:center;gap:9px;cursor:pointer;
+    font-family:"Heebo";font-weight:700;font-size:17px;color:#15181d;padding:14px 30px;border:none;border-radius:14px;
+    background:linear-gradient(180deg,var(--gold),#bb8f3d);box-shadow:0 10px 30px -10px rgba(217,178,92,.7);
+    opacity:0;animation:rise .8s .26s forwards;transition:transform .2s}
+  .quizBtn:hover{transform:translateY(-3px)}
+
+  .controls{margin:34px auto 8px;display:flex;flex-direction:column;align-items:center;gap:18px;opacity:0;animation:rise .8s .32s forwards}
+  .search{position:relative;width:min(520px,100%)}
+  .search input{width:100%;padding:16px 52px 16px 18px;border-radius:16px;background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.02));border:1px solid var(--line);color:var(--txt);font-family:"Heebo";font-size:16px;outline:none;transition:.25s}
+  .search input::placeholder{color:#5d6675}
+  .search input:focus{border-color:var(--gold);box-shadow:0 0 0 4px rgba(217,178,92,.12)}
+  .search svg{position:absolute;top:50%;right:18px;transform:translateY(-50%);width:20px;height:20px;stroke:#5d6675}
+  .chips{display:flex;flex-wrap:wrap;gap:9px;justify-content:center}
+  .chip{padding:9px 18px;border-radius:999px;font-size:14px;font-weight:500;cursor:pointer;background:rgba(255,255,255,.04);border:1px solid var(--line);color:var(--muted);transition:.2s;user-select:none}
+  .chip:hover{color:var(--txt);border-color:#3a414d}
+  .chip.active{background:linear-gradient(180deg,var(--chrome1),var(--chrome2));color:#15181d;border-color:transparent;font-weight:700;box-shadow:0 4px 18px rgba(255,255,255,.12)}
+
+  .count{margin:16px 0 26px;text-align:center;color:var(--muted);font-size:14px}
+  .count b{color:var(--gold);font-family:"Archivo";font-weight:900}
+
+  .sec-head{display:flex;align-items:center;gap:14px;margin:30px 4px 16px}
+  .sec-head .ttl{font-weight:900;font-size:24px}
+  .sec-head .sml{font-family:"Archivo";font-size:11px;letter-spacing:.3em;text-transform:uppercase;opacity:.7}
+  .sec-head .cnt{font-family:"Archivo";font-weight:900;font-size:13px;padding:3px 10px;border-radius:999px;background:rgba(255,255,255,.06)}
+  .sec-head .rule{flex:1;height:1px;background:linear-gradient(90deg,currentColor,transparent)}
+
+  .grid{display:grid;gap:18px;grid-template-columns:repeat(auto-fill,minmax(168px,1fr))}
+  .card{position:relative;border-radius:20px;padding:22px 16px 18px;text-align:center;background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.012));border:1px solid var(--line);overflow:hidden;transition:transform .3s cubic-bezier(.2,.7,.3,1),border-color .3s,box-shadow .3s;animation:pop .5s both}
+  .card::before{content:"";position:absolute;inset:0;border-radius:20px;padding:1px;opacity:0;transition:.3s;background:linear-gradient(140deg,rgba(255,255,255,.5),transparent 40%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
+  .card:hover{transform:translateY(-8px);border-color:transparent;box-shadow:0 24px 50px -22px rgba(0,0,0,.9),0 0 0 1px rgba(255,255,255,.06)}
+  .card:hover::before{opacity:1}
+  .plate{width:104px;height:104px;margin:0 auto 16px;border-radius:50%;display:grid;place-items:center;position:relative;background:radial-gradient(circle at 32% 26%,#2b323c,#171b21 70%);box-shadow:inset 0 2px 5px rgba(255,255,255,.10),inset 0 -6px 14px rgba(0,0,0,.6),0 8px 20px -8px rgba(0,0,0,.7);transition:transform .35s cubic-bezier(.2,.7,.3,1)}
+  .plate::after{content:"";position:absolute;inset:0;border-radius:50%;background:linear-gradient(135deg,rgba(255,255,255,.22),transparent 38%);opacity:.7}
+  .card:hover .plate{transform:scale(1.07) rotate(-2deg)}
+  .plate svg{width:72px;height:72px;display:block;position:relative;z-index:1}
+  .en{font-family:"Archivo";font-weight:700;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:#cfd6e0}
+  .he{font-weight:700;font-size:20px;margin:3px 0 10px}
+  .tags{display:flex;gap:6px;justify-content:center;flex-wrap:wrap}
+  .tag{font-size:11px;font-weight:500;color:var(--muted);background:rgba(255,255,255,.05);border:1px solid var(--line);padding:3px 10px;border-radius:999px}
+  .tag.tier{color:#0f1115;font-weight:700;border:none}
+
+  .empty{text-align:center;color:var(--muted);padding:70px 0;font-size:18px}
+  footer{margin-top:60px;text-align:center;color:#5b6675;font-size:13px;line-height:1.8}
+  footer b{color:var(--muted)}
+
+  /* QUIZ */
+  .quiz{position:fixed;inset:0;z-index:50;background:rgba(7,9,12,.92);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:20px}
+  .quiz.show{display:flex;animation:fade .3s}
+  .quizCard{width:min(560px,100%);background:linear-gradient(180deg,#13171e,#0d1015);border:1px solid var(--line);border-radius:24px;padding:24px 22px 26px;box-shadow:0 40px 90px -30px #000}
+  .quizTop{display:flex;align-items:center;justify-content:space-between;font-size:14px;color:var(--muted)}
+  .quizTop b{color:var(--gold);font-family:"Archivo"}
+  .qx{background:none;border:none;color:var(--muted);font-size:20px;cursor:pointer;line-height:1}
+  .qbar{height:6px;border-radius:999px;background:rgba(255,255,255,.07);margin:14px 0 20px;overflow:hidden}
+  .qfill{height:100%;width:0;background:linear-gradient(90deg,var(--gold),#f0d189);border-radius:999px;transition:width .4s}
+  .qprompt{text-align:center;font-size:20px;font-weight:700;margin-bottom:18px}
+  .qstim{display:grid;place-items:center;margin-bottom:20px}
+  .qstim .plate{width:120px;height:120px;margin:0}
+  .qstim .plate svg{width:84px;height:84px}
+  .qstim .nameBig{font-size:34px;font-weight:900;background:linear-gradient(180deg,var(--chrome1),var(--chrome2));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .opts{display:grid;gap:11px}
+  .opts.logos{grid-template-columns:1fr 1fr}
+  .opt{padding:15px;border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--txt);font-family:"Heebo";font-size:17px;font-weight:500;cursor:pointer;transition:.18s;text-align:center}
+  .opt:hover{border-color:#4a525f;background:rgba(255,255,255,.07)}
+  .opt.logo{display:grid;place-items:center;padding:12px}
+  .opt.logo .plate{width:86px;height:86px;margin:0}
+  .opt.logo .plate svg{width:60px;height:60px}
+  .opt.correct{border-color:var(--ok);background:rgba(62,207,142,.16);color:#bff4da}
+  .opt.wrong{border-color:var(--bad);background:rgba(226,86,106,.16);color:#f7c3cc}
+  .opt:disabled{cursor:default}
+  .qnext{margin-top:20px;width:100%;padding:15px;border:none;border-radius:14px;font-family:"Heebo";font-weight:700;font-size:17px;color:#15181d;background:linear-gradient(180deg,var(--gold),#bb8f3d);cursor:pointer;display:none}
+  .qnext.show{display:block;animation:rise .3s}
+  /* result */
+  .res{text-align:center;padding:8px 0}
+  .res .big{font-size:64px;font-weight:900;font-family:"Archivo";background:linear-gradient(180deg,var(--gold),#b88a35);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .res .lbl{color:var(--muted);margin:6px 0 4px}
+  .res .msg{font-size:22px;font-weight:700;margin:14px 0 22px}
+  .res .btns{display:flex;gap:11px}
+  .res .btns button{flex:1;padding:15px;border-radius:14px;font-family:"Heebo";font-weight:700;font-size:16px;cursor:pointer;border:1px solid var(--line);background:rgba(255,255,255,.05);color:var(--txt)}
+  .res .btns .pri{border:none;color:#15181d;background:linear-gradient(180deg,var(--gold),#bb8f3d)}
+
+  @keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes pop{from{opacity:0;transform:translateY(22px) scale(.96)}to{opacity:1;transform:translateY(0) scale(1)}}
+  @keyframes fade{from{opacity:0}to{opacity:1}}
+  @media(max-width:560px){
+    .grid{grid-template-columns:repeat(auto-fill,minmax(144px,1fr));gap:13px}
+    .plate{width:92px;height:92px}.plate svg{width:64px;height:64px}
+    header{padding:44px 0 16px}
+  }
+</style>
+<link rel="stylesheet" href="course-light-theme.css">
+<link rel="stylesheet" href="site-qa-2026.css">
+</head>
+<body class="car-logos-page">
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Automotive Emblems</div>
+    <h1>סמלי הרכבים בעולם</h1>
+    <p class="sub">אוסף <b id="totalTop">56</b> מותגי רכב — מחולקים ל‑3 רמות: <b>יוקרתי · רגיל · זול</b></p>
+    <button class="quizBtn" id="startQuiz">🎯 התחל מבחן</button>
+  </header>
+
+  <div class="controls">
+    <div class="search">
+      <input id="search" type="text" placeholder="חיפוש מותג… (עברית או אנגלית)" autocomplete="off">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
+    </div>
+    <div class="chips" id="chips"></div>
+  </div>
+
+  <p class="count">מוצגים <b id="shown">56</b> מתוך <b id="total">56</b> מותגים</p>
+
+  <div id="content"></div>
+
+  <footer>
+    <p><b>סמלי הרכבים בעולם</b> · הסמלים עוצבו מחדש ב‑SVG למטרות תצוגה</p>
+    <p>החלוקה לרמות מחיר היא כללית ועשויה להשתנות לפי דגם ושוק · הסמלים והשמות הם סימני מסחר של היצרנים</p>
+  </footer>
+</div>
+
+<!-- QUIZ OVERLAY -->
+<div class="quiz" id="quiz">
+  <div class="quizCard">
+    <div class="quizTop">
+      <span>שאלה <b id="qProg">1</b> / 10</span>
+      <span>ניקוד: <b id="qScore">0</b></span>
+      <button class="qx" id="qClose">✕</button>
+    </div>
+    <div class="qbar"><div class="qfill" id="qFill"></div></div>
+    <div id="qBody"></div>
+  </div>
+</div>
+
+<script>
+/* ---------- emblems (stylized SVG) ---------- */
+const S={
+  bmw:`<svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="56" fill="#16181d" stroke="#3a3d44" stroke-width="2"/><circle cx="60" cy="60" r="40" fill="#fff"/><path d="M60 60 L60 20 A40 40 0 0 1 100 60 Z" fill="#0a4ea3"/><path d="M60 60 L60 100 A40 40 0 0 1 20 60 Z" fill="#0a4ea3"/><circle cx="60" cy="60" r="40" fill="none" stroke="#16181d" stroke-width="3"/></svg>`,
+  mercedes:`<svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="54" fill="none" stroke="#c7cad0" stroke-width="4"/><circle cx="60" cy="60" r="44" fill="none" stroke="#c7cad0" stroke-width="2"/><g stroke="#c7cad0" stroke-width="5" stroke-linecap="round"><line x1="60" y1="60" x2="60" y2="14"/><line x1="60" y1="60" x2="20" y2="82"/><line x1="60" y1="60" x2="100" y2="82"/></g></svg>`,
+  audi:`<svg viewBox="0 0 120 120"><g fill="none" stroke="#d0d3d8" stroke-width="5"><circle cx="26" cy="60" r="18"/><circle cx="49" cy="60" r="18"/><circle cx="72" cy="60" r="18"/><circle cx="95" cy="60" r="18"/></g></svg>`,
+  vw:`<svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="54" fill="#06102b" stroke="#1f6fd6" stroke-width="3"/><circle cx="60" cy="60" r="44" fill="none" stroke="#3a86e0" stroke-width="2"/><g fill="none" stroke="#cfe0fb" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"><path d="M40 36 L60 64 L80 36"/><path d="M40 60 L50 92 L60 70 L70 92 L80 60"/></g></svg>`,
+  porsche:`<svg viewBox="0 0 120 120"><path d="M34 18 L86 18 L86 70 C86 92 60 104 60 104 C60 104 34 92 34 70 Z" fill="#11130f" stroke="#c8a24a" stroke-width="3"/><rect x="34" y="26" width="52" height="13" fill="#c8a24a"/><text x="60" y="36" text-anchor="middle" font-size="9" font-weight="800" fill="#11130f" font-family="Archivo,sans-serif" letter-spacing=".5">PORSCHE</text><path d="M60 50 C56 54 56 62 60 64 C57 70 60 78 65 80 L62 71 C67 71 68 64 64 60 C70 58 68 50 63 51 C63 47 60 47 60 50 Z" fill="#c8a24a"/></svg>`,
+  opel:`<svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="54" fill="#0e1014" stroke="#f7c200" stroke-width="3"/><circle cx="60" cy="60" r="40" fill="none" stroke="#f7c200" stroke-width="4"/><path d="M30 54 L70 54 L52 66 L92 66" fill="none" stroke="#f7c200" stroke-width="8" stroke-linejoin="miter"/></svg>`,
+  mini:`<svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="29" fill="#16181d" stroke="#d0d3d8" stroke-width="3"/><text x="60" y="66" text-anchor="middle" font-size="15" font-weight="900" fill="#fff" font-family="Archivo,sans-serif">MINI</text><path d="M30 60 C18 48 8 50 4 60 C14 56 22 58 28 64 Z" fill="#d0d3d8"/><path d="M90 60 C102 48 112 50 116 60 C106 56 98 58 92 64 Z" fill="#d0d3d8"/></svg>`,
+  toyota:`<svg viewBox="0 0 120 120"><g fill="none" stroke="#cfd2d7" stroke-width="6"><ellipse cx="60" cy="62" rx="46" ry="30"/><ellipse cx="60" cy="54" rx="13" ry="24"/><ellipse cx="60" cy="48" rx="30" ry="12"/></g></svg>`,
+  honda:`<svg viewBox="0 0 120 120"><rect x="28" y="24" width="64" height="72" rx="10" fill="none" stroke="#cfd2d7" stroke-width="4"/><path d="M42 38 L42 82 M42 60 L78 60 M78 38 L78 82" stroke="#cfd2d7" stroke-width="8" fill="none" stroke-linecap="square"/></svg>`,
+  nissan:`<svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="32" fill="none" stroke="#cfd2d7" stroke-width="4"/><rect x="10" y="51" width="100" height="18" fill="#cfd2d7"/><text x="60" y="64" text-anchor="middle" font-size="11" font-weight="800" fill="#16181d" font-family="Archivo,sans-serif" letter-spacing="1">NISSAN</text></svg>`,
+  mazda:`<svg viewBox="0 0 120 120"><ellipse cx="60" cy="60" rx="50" ry="34" fill="none" stroke="#cfd2d7" stroke-width="4"/><path d="M40 72 C40 50 60 48 60 62 C60 48 80 50 80 72 L72 72 C72 58 64 58 64 70 L56 70 C56 58 48 58 48 72 Z" fill="#cfd2d7"/></svg>`,
+  mitsubishi:`<svg viewBox="0 0 120 120"><g fill="#e2202a" transform="translate(60,58)"><polygon points="0,-44 13,-22 0,0 -13,-22"/><polygon points="0,-44 13,-22 0,0 -13,-22" transform="rotate(120)"/><polygon points="0,-44 13,-22 0,0 -13,-22" transform="rotate(240)"/></g></svg>`,
+  subaru:`<svg viewBox="0 0 120 120"><ellipse cx="60" cy="60" rx="52" ry="32" fill="#16357d"/><ellipse cx="60" cy="60" rx="52" ry="32" fill="none" stroke="#7fa8e0" stroke-width="2"/><g fill="#e8eefc"><path d="M42 50 L49 60 L42 70 L35 60 Z"/><path d="M64 47 l4 6 -4 6 -4 -6 z"/><path d="M78 54 l4 6 -4 6 -4 -6 z"/><path d="M72 67 l3.5 5 -3.5 5 -3.5 -5 z"/><path d="M88 62 l3.5 5 -3.5 5 -3.5 -5 z"/><path d="M60 70 l3.5 5 -3.5 5 -3.5 -5 z"/></g></svg>`,
+  lexus:`<svg viewBox="0 0 120 120"><ellipse cx="60" cy="60" rx="50" ry="34" fill="none" stroke="#cfd2d7" stroke-width="4"/><path d="M44 38 L44 70 C44 78 52 80 64 78" fill="none" stroke="#cfd2d7" stroke-width="6" stroke-linecap="round"/></svg>`,
+  suzuki:`<svg viewBox="0 0 120 120"><text x="60" y="92" text-anchor="middle" font-size="92" font-weight="900" font-style="italic" fill="#e1232a" font-family="Archivo,sans-serif">S</text></svg>`,
+  infiniti:`<svg viewBox="0 0 120 120"><path d="M22 90 C40 60 54 44 60 24 C66 44 80 60 98 90" fill="none" stroke="#cfd2d7" stroke-width="6" stroke-linecap="round"/><path d="M40 90 L80 90" stroke="#cfd2d7" stroke-width="6" stroke-linecap="round"/></svg>`,
+  hyundai:`<svg viewBox="0 0 120 120"><ellipse cx="60" cy="60" rx="52" ry="32" fill="none" stroke="#cfd2d7" stroke-width="4"/><text x="60" y="82" text-anchor="middle" font-size="60" font-weight="800" font-style="italic" fill="#cfd2d7" font-family="Archivo,sans-serif">H</text></svg>`,
+  kia:`<svg viewBox="0 0 120 120"><text x="60" y="74" text-anchor="middle" font-size="38" font-weight="900" font-style="italic" fill="#bb1622" font-family="Archivo,sans-serif" letter-spacing="2">KIA</text></svg>`,
+  genesis:`<svg viewBox="0 0 120 120"><g fill="none" stroke="#cfd2d7" stroke-width="3" stroke-linecap="round"><path d="M60 52 C40 46 22 48 8 56 C30 54 48 56 60 62"/><path d="M60 52 C80 46 98 48 112 56 C90 54 72 56 60 62"/></g><path d="M52 70 L60 86 L68 70 Z" fill="#cfd2d7"/></svg>`,
+  ford:`<svg viewBox="0 0 120 120"><ellipse cx="60" cy="60" rx="54" ry="30" fill="#1c3e94" stroke="#9fb6e6" stroke-width="2"/><text x="60" y="70" text-anchor="middle" font-size="30" font-weight="700" font-style="italic" fill="#fff" font-family="Georgia,serif">Ford</text></svg>`,
+  chevrolet:`<svg viewBox="0 0 120 120"><path d="M14 52 H46 V40 H74 V52 H106 V68 H74 V80 H46 V68 H14 Z" fill="#efb700" stroke="#8a6a14" stroke-width="2" stroke-linejoin="round"/></svg>`,
+  tesla:`<svg viewBox="0 0 120 120"><g fill="#cc1f2d"><path d="M40 28 C52 22 68 22 80 28 L77 38 C68 33 52 33 43 38 Z"/><path d="M56 40 L64 40 L64 98 L56 98 Z"/><path d="M57 28 L63 28 L63 40 L57 40 Z"/></g></svg>`,
+  jeep:`<svg viewBox="0 0 120 120"><circle cx="48" cy="40" r="5" fill="none" stroke="#cfd2d7" stroke-width="3"/><circle cx="72" cy="40" r="5" fill="none" stroke="#cfd2d7" stroke-width="3"/><text x="60" y="80" text-anchor="middle" font-size="32" font-weight="800" fill="#cfd2d7" font-family="Archivo,sans-serif" letter-spacing="2">JEEP</text></svg>`,
+  cadillac:`<svg viewBox="0 0 120 120"><rect x="24" y="42" width="72" height="36" fill="#0e1014" stroke="#cfd2d7" stroke-width="2"/><rect x="24" y="42" width="24" height="18" fill="#b01e2e"/><rect x="48" y="42" width="24" height="18" fill="#e9c64a"/><rect x="72" y="42" width="24" height="18" fill="#2a3a8f"/><rect x="24" y="60" width="24" height="18" fill="#cfd2d7"/><rect x="48" y="60" width="24" height="18" fill="#b01e2e"/><rect x="72" y="60" width="24" height="18" fill="#1a7a4a"/></svg>`,
+  dodge:`<svg viewBox="0 0 120 120"><g fill="#c81f27"><path d="M44 36 L60 36 L44 84 L28 84 Z"/><path d="M68 36 L84 36 L68 84 L52 84 Z"/></g></svg>`,
+  gmc:`<svg viewBox="0 0 120 120"><rect x="16" y="46" width="88" height="30" rx="4" fill="#c8102e"/><text x="60" y="69" text-anchor="middle" font-size="24" font-weight="900" fill="#fff" font-family="Archivo,sans-serif" letter-spacing="2">GMC</text></svg>`,
+  chrysler:`<svg viewBox="0 0 120 120"><g fill="#cfd2d7"><path d="M48 56 C32 50 16 52 6 60 C22 57 34 58 46 64 Z"/><path d="M72 56 C88 50 104 52 114 60 C98 57 86 58 74 64 Z"/></g><path d="M60 46 L70 56 L66 70 L54 70 L50 56 Z" fill="#1f3c8c" stroke="#cfd2d7" stroke-width="2"/></svg>`,
+  ferrari:`<svg viewBox="0 0 120 120"><path d="M34 22 L86 22 L86 70 C86 92 60 104 60 104 C60 104 34 92 34 70 Z" fill="#f4d100" stroke="#1a1a1a" stroke-width="3"/><rect x="34" y="20" width="17" height="5" fill="#1a7a3d"/><rect x="51" y="20" width="18" height="5" fill="#f4f4f4"/><rect x="69" y="20" width="17" height="5" fill="#c81f27"/><path d="M60 34 C55 39 56 49 61 51 C57 58 60 70 67 73 L63 61 C69 61 70 52 65 48 C72 46 70 36 63 38 C63 32 60 31 60 34 Z" fill="#1a1a1a"/><text x="60" y="96" text-anchor="middle" font-size="13" font-weight="900" fill="#1a1a1a" font-family="Georgia,serif">SF</text></svg>`,
+  lamborghini:`<svg viewBox="0 0 120 120"><path d="M34 22 L86 22 L86 70 C86 92 60 104 60 104 C60 104 34 92 34 70 Z" fill="#0e0e10" stroke="#c8a24a" stroke-width="3"/><path d="M42 50 L53 46 L55 34 L60 47 L65 34 L67 46 L78 50 L69 58 C73 72 60 84 60 84 C60 84 47 72 51 58 Z" fill="#c8a24a"/></svg>`,
+  maserati:`<svg viewBox="0 0 120 120"><g fill="none" stroke="#1f3c8c" stroke-width="6" stroke-linecap="round"><path d="M60 22 L60 98"/><path d="M44 46 C44 68 52 74 60 74"/><path d="M76 46 C76 68 68 74 60 74"/><path d="M40 52 L80 52"/></g><g fill="#1f3c8c"><path d="M56 22 l4 -8 4 8 z"/><path d="M40 46 l4 -8 4 8 z"/><path d="M72 46 l4 -8 4 8 z"/></g></svg>`,
+  alfa:`<svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="46" fill="#0b1f3a" stroke="#c8a24a" stroke-width="3"/><circle cx="60" cy="60" r="36" fill="#fff"/><line x1="60" y1="24" x2="60" y2="96" stroke="#0b1f3a" stroke-width="2"/><rect x="46" y="40" width="6" height="40" fill="#c81f27"/><rect x="34" y="57" width="24" height="6" fill="#c81f27"/><path d="M66 36 C80 40 80 52 70 56 C80 60 80 74 66 84" fill="none" stroke="#1f7a3d" stroke-width="5" stroke-linecap="round"/><circle cx="69" cy="34" r="4" fill="#1f7a3d"/></svg>`,
+  fiat:`<svg viewBox="0 0 120 120"><rect x="20" y="44" width="80" height="32" rx="8" fill="#9e1b32"/><text x="60" y="68" text-anchor="middle" font-size="25" font-weight="800" fill="#fff" font-family="Archivo,sans-serif" letter-spacing="3">FIAT</text></svg>`,
+  jaguar:`<svg viewBox="0 0 120 120"><path d="M12 66 C26 60 36 62 48 56 C56 52 64 46 76 40 C84 36 94 32 106 28 C100 38 94 44 86 48 L96 46 C88 54 78 58 68 60 C74 62 80 62 86 60 C76 68 62 70 50 68 C40 70 24 72 12 66 Z" fill="#cfd2d7"/><text x="60" y="92" text-anchor="middle" font-size="15" font-weight="700" fill="#cfd2d7" font-family="Georgia,serif" letter-spacing="3">JAGUAR</text></svg>`,
+  landrover:`<svg viewBox="0 0 120 120"><ellipse cx="60" cy="60" rx="54" ry="30" fill="#2a6e3f" stroke="#cfe0d4" stroke-width="2"/><text x="60" y="56" text-anchor="middle" font-size="13" font-weight="800" fill="#fff" font-family="Archivo,sans-serif" letter-spacing="1">LAND</text><text x="60" y="74" text-anchor="middle" font-size="13" font-weight="800" fill="#fff" font-family="Archivo,sans-serif" letter-spacing="1">ROVER</text></svg>`,
+  rollsroyce:`<svg viewBox="0 0 120 120"><rect x="30" y="24" width="60" height="72" fill="#0e0e10" stroke="#c8a24a" stroke-width="2"/><text x="60" y="78" text-anchor="middle" font-size="46" font-weight="800" fill="#c8a24a" font-family="Georgia,serif" letter-spacing="-8">RR</text></svg>`,
+  bentley:`<svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="22" fill="#0e1410" stroke="#cfd2d7" stroke-width="2"/><text x="60" y="70" text-anchor="middle" font-size="24" font-weight="800" fill="#cfd2d7" font-family="Georgia,serif">B</text><g fill="#cfd2d7"><path d="M38 58 C24 46 10 48 4 56 C18 54 28 56 36 62 Z"/><path d="M82 58 C96 46 110 48 116 56 C102 54 92 56 84 62 Z"/></g></svg>`,
+  aston:`<svg viewBox="0 0 120 120"><g fill="#1f6e4a"><path d="M34 56 C20 50 8 52 2 60 C16 58 24 58 34 64 Z"/><path d="M86 56 C100 50 112 52 118 60 C104 58 96 58 86 64 Z"/></g><rect x="34" y="50" width="52" height="20" fill="#0e1410"/><text x="60" y="64" text-anchor="middle" font-size="8" font-weight="700" fill="#fff" font-family="Archivo,sans-serif" letter-spacing=".5">ASTON MARTIN</text></svg>`,
+  mclaren:`<svg viewBox="0 0 120 120"><path d="M28 80 C28 50 56 40 94 44 C72 49 58 56 53 70 C68 60 82 58 98 61 C72 70 52 76 46 92 Z" fill="#ff6a00"/></svg>`,
+  lotus:`<svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="40" fill="#f4d100" stroke="#1a6b3a" stroke-width="4"/><text x="60" y="55" text-anchor="middle" font-size="14" font-weight="700" font-style="italic" fill="#1a6b3a" font-family="Georgia,serif">Lotus</text><path d="M44 64 L60 70 L76 64 L60 82 Z" fill="#1a6b3a"/></svg>`,
+  koenigsegg:`<svg viewBox="0 0 120 120"><path d="M34 24 L86 24 L86 64 C86 88 60 100 60 100 C60 100 34 88 34 64 Z" fill="#c01722" stroke="#fff" stroke-width="2"/><path d="M50 44 C50 36 70 36 70 44 L70 78 L64 71 L60 78 L56 71 L50 78 Z" fill="#fff"/><circle cx="55" cy="49" r="2.5" fill="#c01722"/><circle cx="65" cy="49" r="2.5" fill="#c01722"/></svg>`,
+  maybach:`<svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="42" fill="none" stroke="#cfd2d7" stroke-width="3"/><text x="60" y="74" text-anchor="middle" font-size="40" font-weight="900" fill="#cfd2d7" font-family="Georgia,serif" letter-spacing="-10">MM</text></svg>`,
+  peugeot:`<svg viewBox="0 0 120 120"><path d="M34 22 L86 22 L86 60 C86 88 60 100 60 100 C60 100 34 88 34 60 Z" fill="#0e0e10" stroke="#cfd2d7" stroke-width="2"/><path d="M60 34 L66 44 L76 42 L70 52 L80 58 L68 60 L71 72 L60 64 L49 72 L52 60 L40 58 L50 52 L44 42 L54 44 Z" fill="#cfd2d7"/></svg>`,
+  renault:`<svg viewBox="0 0 120 120"><g fill="none" stroke="#f5c518" stroke-width="7" stroke-linejoin="round"><path d="M60 16 L92 60 L60 104 L28 60 Z"/><path d="M60 38 L78 60 L60 82 L42 60 Z"/></g></svg>`,
+  citroen:`<svg viewBox="0 0 120 120"><g fill="none" stroke="#c8102e" stroke-width="9" stroke-linejoin="miter"><path d="M30 58 L60 34 L90 58"/><path d="M30 80 L60 56 L90 80"/></g></svg>`,
+  bugatti:`<svg viewBox="0 0 120 120"><ellipse cx="60" cy="60" rx="30" ry="42" fill="#c8102e" stroke="#fff" stroke-width="3"/><text x="60" y="73" text-anchor="middle" font-size="32" font-weight="800" fill="#fff" font-family="Georgia,serif">EB</text><g fill="#c8102e"><circle cx="60" cy="16" r="3"/><circle cx="60" cy="104" r="3"/><circle cx="30" cy="60" r="3"/><circle cx="90" cy="60" r="3"/></g></svg>`,
+  volvo:`<svg viewBox="0 0 120 120"><circle cx="56" cy="64" r="30" fill="none" stroke="#cfd2d7" stroke-width="5"/><line x1="74" y1="46" x2="92" y2="28" stroke="#cfd2d7" stroke-width="5"/><path d="M78 28 L92 28 L92 42" fill="none" stroke="#cfd2d7" stroke-width="5"/><rect x="32" y="57" width="62" height="15" fill="#1a1d22"/><text x="63" y="68" text-anchor="middle" font-size="11" font-weight="800" fill="#cfd2d7" font-family="Archivo,sans-serif" letter-spacing="1">VOLVO</text></svg>`,
+  skoda:`<svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="40" fill="none" stroke="#0e3d2e" stroke-width="3"/><circle cx="60" cy="60" r="30" fill="none" stroke="#0e3d2e" stroke-width="2"/><g fill="#1c8a4a"><path d="M36 60 C40 48 52 46 60 50 L52 56 C58 54 64 56 66 60 C64 64 58 66 52 64 L60 70 C52 74 40 72 36 60 Z"/><path d="M66 60 L92 52 L84 60 L92 68 Z"/></g><circle cx="46" cy="56" r="3" fill="#0e3d2e"/></svg>`,
+  seat:`<svg viewBox="0 0 120 120"><path d="M36 30 L80 30 L74 41 L48 41 L48 54 L78 54 L72 65 L36 65 L42 54 L66 54 L66 41 L36 41 Z" fill="#9aa0a8"/><text x="60" y="92" text-anchor="middle" font-size="22" font-weight="900" fill="#b32430" font-family="Archivo,sans-serif" letter-spacing="3">SEAT</text></svg>`,
+  dacia:`<svg viewBox="0 0 120 120"><rect x="14" y="46" width="92" height="30" rx="6" fill="#16181d" stroke="#cfd2d7" stroke-width="2"/><text x="60" y="68" text-anchor="middle" font-size="20" font-weight="800" fill="#cfd2d7" font-family="Archivo,sans-serif" letter-spacing="2">DACIA</text></svg>`,
+  lada:`<svg viewBox="0 0 120 120"><ellipse cx="60" cy="60" rx="44" ry="34" fill="#1f3c8c" stroke="#cfd2d7" stroke-width="2"/><path d="M30 70 L90 70 L78 80 L42 80 Z" fill="#cfd2d7"/><rect x="58" y="34" width="4" height="34" fill="#cfd2d7"/><path d="M62 38 L82 50 L62 50 Z" fill="#cfd2d7"/></svg>`,
+  byd:`<svg viewBox="0 0 120 120"><ellipse cx="60" cy="60" rx="48" ry="32" fill="#16357d" stroke="#9fb6e6" stroke-width="2"/><text x="60" y="69" text-anchor="middle" font-size="24" font-weight="800" fill="#fff" font-family="Archivo,sans-serif" letter-spacing="2">BYD</text></svg>`,
+  chery:`<svg viewBox="0 0 120 120"><ellipse cx="60" cy="60" rx="48" ry="30" fill="none" stroke="#cfd2d7" stroke-width="4"/><text x="60" y="68" text-anchor="middle" font-size="17" font-weight="800" fill="#cfd2d7" font-family="Archivo,sans-serif" letter-spacing="1">CHERY</text></svg>`,
+  geely:`<svg viewBox="0 0 120 120"><path d="M30 26 L90 26 L90 64 C90 88 60 100 60 100 C60 100 30 88 30 64 Z" fill="#1f3c8c" stroke="#cfd2d7" stroke-width="2"/><g fill="#cfd2d7"><circle cx="60" cy="56" r="6"/><path d="M60 38 L64 54 L60 56 L56 54 Z"/><path d="M60 74 L56 60 L60 58 L64 60 Z"/></g><text x="60" y="92" text-anchor="middle" font-size="9" font-weight="700" fill="#fff" font-family="Archivo,sans-serif">GEELY</text></svg>`,
+  mg:`<svg viewBox="0 0 120 120"><path d="M44 22 L76 22 L98 44 L98 76 L76 98 L44 98 L22 76 L22 44 Z" fill="#16181d" stroke="#cf2030" stroke-width="4"/><text x="60" y="72" text-anchor="middle" font-size="32" font-weight="800" fill="#cf2030" font-family="Archivo,sans-serif" letter-spacing="1">MG</text></svg>`,
+  ssangyong:`<svg viewBox="0 0 120 120"><g fill="none" stroke="#cfd2d7" stroke-width="4" stroke-linecap="round"><path d="M60 40 L60 84"/><path d="M60 48 C42 38 24 40 10 50 C30 48 48 50 60 58"/><path d="M60 48 C78 38 96 40 110 50 C90 48 72 50 60 58"/><path d="M60 62 C46 56 32 58 22 66 C36 64 50 66 60 72"/><path d="M60 62 C74 56 88 58 98 66 C84 64 70 66 60 72"/></g></svg>`,
+  proton:`<svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="42" fill="#0e3d2e" stroke="#e9c64a" stroke-width="3"/><path d="M60 34 L52 48 L40 46 L48 58 L40 66 L54 66 L56 82 L60 70 L64 82 L66 66 L80 66 L72 58 L80 46 L68 48 Z" fill="#e9c64a"/></svg>`,
+  acura:`<svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="42" fill="none" stroke="#cfd2d7" stroke-width="4"/><path d="M40 80 L60 36 L80 80" fill="none" stroke="#cfd2d7" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/><line x1="60" y1="46" x2="60" y2="80" stroke="#cfd2d7" stroke-width="7" stroke-linecap="round"/></svg>`
+};
+
+/* ---------- data: en, he, country, tier ---------- */
+const T={L:"יוקרתי",M:"רגיל",B:"זול"};
+const BRANDS=[
+  {en:"Mercedes-Benz",he:"מרצדס-בנץ",c:"גרמניה",t:T.L,svg:S.mercedes},
+  {en:"BMW",he:"ב.מ.וו",c:"גרמניה",t:T.L,svg:S.bmw},
+  {en:"Audi",he:"אאודי",c:"גרמניה",t:T.L,svg:S.audi},
+  {en:"Porsche",he:"פורשה",c:"גרמניה",t:T.L,svg:S.porsche},
+  {en:"Lexus",he:"לקסוס",c:"יפן",t:T.L,svg:S.lexus},
+  {en:"Genesis",he:"ג׳נסיס",c:"קוריאה",t:T.L,svg:S.genesis},
+  {en:"Infiniti",he:"אינפיניטי",c:"יפן",t:T.L,svg:S.infiniti},
+  {en:"Cadillac",he:"קדילק",c:"ארה״ב",t:T.L,svg:S.cadillac},
+  {en:"Tesla",he:"טסלה",c:"ארה״ב",t:T.L,svg:S.tesla},
+  {en:"Mini",he:"מיני",c:"גרמניה",t:T.L,svg:S.mini},
+  {en:"Alfa Romeo",he:"אלפא רומיאו",c:"איטליה",t:T.L,svg:S.alfa},
+  {en:"Ferrari",he:"פרארי",c:"איטליה",t:T.L,svg:S.ferrari},
+  {en:"Lamborghini",he:"למבורגיני",c:"איטליה",t:T.L,svg:S.lamborghini},
+  {en:"Maserati",he:"מזראטי",c:"איטליה",t:T.L,svg:S.maserati},
+  {en:"Jaguar",he:"יגואר",c:"בריטניה",t:T.L,svg:S.jaguar},
+  {en:"Land Rover",he:"לנד רובר",c:"בריטניה",t:T.L,svg:S.landrover},
+  {en:"Rolls-Royce",he:"רולס-רויס",c:"בריטניה",t:T.L,svg:S.rollsroyce},
+  {en:"Bentley",he:"בנטלי",c:"בריטניה",t:T.L,svg:S.bentley},
+  {en:"Aston Martin",he:"אסטון מרטין",c:"בריטניה",t:T.L,svg:S.aston},
+  {en:"McLaren",he:"מקלארן",c:"בריטניה",t:T.L,svg:S.mclaren},
+  {en:"Lotus",he:"לוטוס",c:"בריטניה",t:T.L,svg:S.lotus},
+  {en:"Bugatti",he:"בוגאטי",c:"צרפת",t:T.L,svg:S.bugatti},
+  {en:"Koenigsegg",he:"קניגזג",c:"שבדיה",t:T.L,svg:S.koenigsegg},
+  {en:"Maybach",he:"מייבאך",c:"גרמניה",t:T.L,svg:S.maybach},
+  {en:"Acura",he:"אקורה",c:"יפן",t:T.L,svg:S.acura},
+
+  {en:"Toyota",he:"טויוטה",c:"יפן",t:T.M,svg:S.toyota},
+  {en:"Honda",he:"הונדה",c:"יפן",t:T.M,svg:S.honda},
+  {en:"Volkswagen",he:"פולקסווגן",c:"גרמניה",t:T.M,svg:S.vw},
+  {en:"Nissan",he:"ניסאן",c:"יפן",t:T.M,svg:S.nissan},
+  {en:"Mazda",he:"מאזדה",c:"יפן",t:T.M,svg:S.mazda},
+  {en:"Mitsubishi",he:"מיצובישי",c:"יפן",t:T.M,svg:S.mitsubishi},
+  {en:"Subaru",he:"סובארו",c:"יפן",t:T.M,svg:S.subaru},
+  {en:"Hyundai",he:"יונדאי",c:"קוריאה",t:T.M,svg:S.hyundai},
+  {en:"Kia",he:"קיה",c:"קוריאה",t:T.M,svg:S.kia},
+  {en:"Ford",he:"פורד",c:"ארה״ב",t:T.M,svg:S.ford},
+  {en:"Chevrolet",he:"שברולט",c:"ארה״ב",t:T.M,svg:S.chevrolet},
+  {en:"Jeep",he:"ג׳יפ",c:"ארה״ב",t:T.M,svg:S.jeep},
+  {en:"Dodge",he:"דודג׳",c:"ארה״ב",t:T.M,svg:S.dodge},
+  {en:"GMC",he:"ג׳י.אם.סי",c:"ארה״ב",t:T.M,svg:S.gmc},
+  {en:"Chrysler",he:"קרייזלר",c:"ארה״ב",t:T.M,svg:S.chrysler},
+  {en:"Fiat",he:"פיאט",c:"איטליה",t:T.M,svg:S.fiat},
+  {en:"Peugeot",he:"פיג׳ו",c:"צרפת",t:T.M,svg:S.peugeot},
+  {en:"Renault",he:"רנו",c:"צרפת",t:T.M,svg:S.renault},
+  {en:"Citroën",he:"סיטרואן",c:"צרפת",t:T.M,svg:S.citroen},
+  {en:"Opel",he:"אופל",c:"גרמניה",t:T.M,svg:S.opel},
+  {en:"Volvo",he:"וולוו",c:"שבדיה",t:T.M,svg:S.volvo},
+  {en:"Seat",he:"סיאט",c:"ספרד",t:T.M,svg:S.seat},
+
+  {en:"Suzuki",he:"סוזוקי",c:"יפן",t:T.B,svg:S.suzuki},
+  {en:"Škoda",he:"סקודה",c:"צ׳כיה",t:T.B,svg:S.skoda},
+  {en:"Dacia",he:"דאצ׳יה",c:"רומניה",t:T.B,svg:S.dacia},
+  {en:"Lada",he:"לאדה",c:"רוסיה",t:T.B,svg:S.lada},
+  {en:"BYD",he:"בי.ווai",c:"סין",t:T.B,svg:S.byd},
+  {en:"Chery",he:"צ׳רי",c:"סין",t:T.B,svg:S.chery},
+  {en:"Geely",he:"ג׳ילי",c:"סין",t:T.B,svg:S.geely},
+  {en:"MG",he:"אם.ג׳י",c:"בריטניה / סין",t:T.B,svg:S.mg},
+  {en:"SsangYong",he:"סאנגיונג",c:"קוריאה",t:T.B,svg:S.ssangyong},
+  {en:"Proton",he:"פרוטון",c:"מלזיה",t:T.B,svg:S.proton}
+];
+// fix BYD hebrew label cleanly
+BRANDS.find(b=>b.en==="BYD").he="ב.י.די";
+
+const TIER_ORDER=[T.L,T.M,T.B];
+const TIER_META={
+  [T.L]:{color:"var(--gold)",hex:"#d9b25c",sml:"Luxury",icon:"♛"},
+  [T.M]:{color:"var(--steel)",hex:"#7fa8e0",sml:"Mainstream",icon:"●"},
+  [T.B]:{color:"var(--green)",hex:"#5fbf8a",sml:"Budget",icon:"₪"}
+};
+
+/* ---------- gallery render ---------- */
+const content=document.getElementById('content');
+const chipsEl=document.getElementById('chips');
+const searchEl=document.getElementById('search');
+const shownEl=document.getElementById('shown');
+document.getElementById('total').textContent=BRANDS.length;
+document.getElementById('totalTop').textContent=BRANDS.length;
+
+let activeTier='הכל',query='';
+['הכל',...TIER_ORDER].forEach(t=>{
+  const chip=document.createElement('div');
+  chip.className='chip'+(t==='הכל'?' active':'');
+  chip.textContent=t;
+  chip.onclick=()=>{activeTier=t;[...chipsEl.children].forEach(x=>x.classList.remove('active'));chip.classList.add('active');render();};
+  chipsEl.appendChild(chip);
+});
+
+function cardHTML(b){
+  const m=TIER_META[b.t];
+  return `<div class="card"><div class="plate">${b.svg}</div>
+    <div class="en">${b.en}</div><div class="he">${b.he}</div>
+    <div class="tags"><span class="tag tier" style="background:${m.hex}">${b.t}</span><span class="tag">${b.c}</span></div></div>`;
+}
+function render(){
+  const q=query.trim();
+  const lc=q.toLowerCase();
+  const list=BRANDS.filter(b=>{
+    const okT=activeTier==='הכל'||b.t===activeTier;
+    const okQ=!q||b.en.toLowerCase().includes(lc)||b.he.includes(q);
+    return okT&&okQ;
+  });
+  shownEl.textContent=list.length;
+  content.innerHTML='';
+  if(!list.length){content.innerHTML='<div class="empty">לא נמצאו מותגים תואמים 🔍</div>';return;}
+  TIER_ORDER.forEach(t=>{
+    const items=list.filter(b=>b.t===t);
+    if(!items.length)return;
+    const m=TIER_META[t];
+    const sec=document.createElement('div');
+    sec.innerHTML=`<div class="sec-head" style="color:${m.hex}">
+        <span class="ttl">${m.icon} ${t}</span>
+        <span class="sml">${m.sml}</span>
+        <span class="cnt">${items.length}</span>
+        <span class="rule"></span></div>
+      <div class="grid">${items.map(cardHTML).join('')}</div>`;
+    content.appendChild(sec);
+  });
+  // stagger
+  [...content.querySelectorAll('.card')].forEach((c,i)=>c.style.animationDelay=(i*22)+'ms');
+}
+searchEl.addEventListener('input',e=>{query=e.target.value;render();});
+render();
+
+/* ---------- QUIZ ---------- */
+const quiz=document.getElementById('quiz');
+const qBody=document.getElementById('qBody');
+const qProg=document.getElementById('qProg');
+const qScore=document.getElementById('qScore');
+const qFill=document.getElementById('qFill');
+const QN=10;
+let questions=[],qi=0,score=0;
+
+const shuffle=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
+const sample=(arr,n,exclude)=>shuffle(arr.filter(x=>x!==exclude)).slice(0,n);
+
+function buildQuestions(){
+  const picks=shuffle(BRANDS).slice(0,QN);
+  return picks.map((b,idx)=>{
+    const type=['name','logo','cat'][idx%3]; // even spread of all 3 types
+    if(type==='name'){
+      const opts=shuffle([b,...sample(BRANDS,3,b)]);
+      return {type,brand:b,opts:opts.map(o=>({label:o.he,correct:o===b}))};
+    }
+    if(type==='logo'){
+      const opts=shuffle([b,...sample(BRANDS,3,b)]);
+      return {type,brand:b,opts:opts.map(o=>({svg:o.svg,correct:o===b}))};
+    }
+    // category
+    const opts=shuffle(TIER_ORDER.map(t=>({label:t,correct:t===b.t})));
+    return {type,brand:b,opts};
+  });
+}
+
+function openQuiz(){questions=buildQuestions();qi=0;score=0;quiz.classList.add('show');showQ();}
+function closeQuiz(){quiz.classList.remove('show');}
+document.getElementById('startQuiz').onclick=openQuiz;
+document.getElementById('qClose').onclick=closeQuiz;
+
+function showQ(){
+  const q=questions[qi];
+  qProg.textContent=qi+1;qScore.textContent=score;
+  qFill.style.width=((qi)/QN*100)+'%';
+  let prompt,stim,optsHTML,cls='';
+  if(q.type==='name'){
+    prompt='איזה מותג זה?';
+    stim=`<div class="plate">${q.brand.svg}</div>`;
+    optsHTML=q.opts.map((o,i)=>`<button class="opt" data-i="${i}">${o.label}</button>`).join('');
+  }else if(q.type==='logo'){
+    prompt=`איזה לוגו שייך ל"${q.brand.he}"?`;
+    stim=`<div class="nameBig">${q.brand.he}</div>`;
+    cls='logos';
+    optsHTML=q.opts.map((o,i)=>`<button class="opt logo" data-i="${i}"><div class="plate">${o.svg}</div></button>`).join('');
+  }else{
+    prompt=`לאיזו רמת מחיר משתייך המותג?`;
+    stim=`<div class="plate">${q.brand.svg}</div><div class="he" style="margin-top:10px">${q.brand.he}</div>`;
+    optsHTML=q.opts.map((o,i)=>`<button class="opt" data-i="${i}">${o.label}</button>`).join('');
+  }
+  qBody.innerHTML=`<div class="qprompt">${prompt}</div>
+    <div class="qstim">${stim}</div>
+    <div class="opts ${cls}">${optsHTML}</div>
+    <button class="qnext" id="qNext">${qi===QN-1?'סיום ←':'הבא ←'}</button>`;
+  const opts=q.opts;
+  qBody.querySelectorAll('.opt').forEach(btn=>{
+    btn.onclick=()=>{
+      const i=+btn.dataset.i;
+      qBody.querySelectorAll('.opt').forEach(b=>b.disabled=true);
+      if(opts[i].correct){btn.classList.add('correct');score++;qScore.textContent=score;}
+      else{
+        btn.classList.add('wrong');
+        qBody.querySelectorAll('.opt').forEach((b,j)=>{if(opts[j].correct)b.classList.add('correct');});
+      }
+      document.getElementById('qNext').classList.add('show');
+    };
+  });
+  document.getElementById('qNext').onclick=()=>{qi++;qi<QN?showQ():showResult();};
+}
+
+function showResult(){
+  qFill.style.width='100%';qProg.textContent=QN;qScore.textContent=score;
+  let msg;
+  if(score===QN)msg='מושלם! אלוף הרכבים 🏆';
+  else if(score>=8)msg='מצוין! ידע מרשים 🚀';
+  else if(score>=6)msg='יפה מאוד, כמעט שם 👍';
+  else if(score>=4)msg='לא רע — שווה סיבוב נוסף 🙂';
+  else msg='יש מקום לשיפור — נסה שוב! 💪';
+  qBody.innerHTML=`<div class="res">
+      <div class="big">${score}/${QN}</div>
+      <div class="lbl">תשובות נכונות</div>
+      <div class="msg">${msg}</div>
+      <div class="btns">
+        <button class="pri" id="again">🔄 שחק שוב</button>
+        <button id="back">חזרה לגלריה</button>
+      </div></div>`;
+  document.getElementById('again').onclick=openQuiz;
+  document.getElementById('back').onclick=closeQuiz;
+}
+</script>
+<script src="site-qa-2026.js" defer></script>
+</body>
+</html>
+
+
+

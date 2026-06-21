@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#087c68">
+  <title>מסלול ווצאפ · מסלול רכב AutoBro</title>
+  <link rel="stylesheet" href="whatsapp-app.css">
+</head>
+<body>
+  <main class="app-shell" id="appShell">
+    <aside class="home-view" id="homeView" aria-label="מסלול הלמידה">
+      <header class="brand-bar">
+        <div class="brand-mark" aria-hidden="true">AB</div>
+        <div class="brand-copy">
+          <strong>AutoBro</strong>
+          <span>מסלול ווצאפ · לימודי רכב</span>
+        </div>
+        <a class="icon-link" href="index.html" title="דף הבית הרגיל" aria-label="דף הבית הרגיל">⌂</a>
+      </header>
+
+      <section class="home-intro" aria-labelledby="homeTitle">
+        <div class="eyebrow">איתי מהמוסך · מחובר</div>
+        <h1 id="homeTitle">מה לומדים עכשיו?</h1>
+        <p>בחר כיוון אחד. בכל משימה תקבל הסבר קצר, מקרה מהשטח ושאלה שבאמת מגיבה לתשובה שלך.</p>
+        <button class="primary-action" id="continueBtn" type="button">המשך מהמשימה הבאה</button>
+        <div class="progress-line" aria-label="התקדמות במסלול">
+          <div class="progress-meta"><span id="progressText">0 מתוך 80 פרקים</span><b id="progressPercent">0%</b></div>
+          <div class="progress-track"><i id="progressBar"></i></div>
+        </div>
+      </section>
+
+      <section class="route-section" aria-labelledby="routeTitle">
+        <div class="section-heading"><h2 id="routeTitle">כניסה מהירה</h2><span>בחר מה דחוף לך</span></div>
+        <div class="route-grid">
+          <button class="route-button route-green" data-route="zero" type="button"><i>1</i><span><b>מתחיל מאפס</b><small>חלקי הרכב והמושגים החשובים</small></span></button>
+          <button class="route-button route-red" data-route="fault" type="button"><i>!</i><span><b>יש לי תקלה</b><small>נורה, רעש, חום או קוד תקלה</small></span></button>
+          <button class="route-button route-amber" data-route="buy" type="button"><i>✓</i><span><b>לפני קניית רכב</b><small>מסמכים, קילומטרים ובדיקות</small></span></button>
+          <button class="route-button route-blue" data-route="electric" type="button"><i>⚡</i><span><b>חשמלי והיברידי</b><small>סוללה, טעינה, BMS וטווח</small></span></button>
+          <a class="route-button route-data" href="vehicle-database.html"><i>⌕</i><span><b>מאגר הרכב</b><small>5,000+ דגמים והגדרות CAN פתוחות</small></span></a>
+        </div>
+      </section>
+
+      <section class="status-section" aria-labelledby="statusTitle">
+        <div class="section-heading"><h2 id="statusTitle">סטטוסים</h2><span>טיפ של חצי דקה</span></div>
+        <div class="status-list" id="statusList"></div>
+      </section>
+
+      <section class="library-section" aria-labelledby="libraryTitle">
+        <div class="section-heading"><h2 id="libraryTitle">שיחות ופרקים</h2><span id="resultCount">80 פרקים</span></div>
+        <label class="search-box" for="lessonSearch"><span aria-hidden="true">⌕</span><input id="lessonSearch" type="search" placeholder="חפש תקלה, מערכת או פרק" autocomplete="off"></label>
+        <div class="filter-row" role="group" aria-label="סינון פרקים">
+          <button class="filter active" data-filter="all" type="button">הכל</button>
+          <button class="filter" data-filter="chapters" type="button">פרקים</button>
+          <button class="filter" data-filter="tools" type="button">כלים</button>
+          <button class="filter" data-filter="done" type="button">הושלמו</button>
+        </div>
+        <div class="lesson-list" id="lessonList"></div>
+        <button class="show-more" id="showMoreBtn" type="button">הצג עוד פרקים</button>
+      </section>
+    </aside>
+
+    <section class="chat-view" id="chatView" aria-label="שיחה עם איתי מהמוסך">
+      <header class="chat-header">
+        <button class="icon-button back-button" id="backBtn" type="button" aria-label="חזרה למסלול">‹</button>
+        <div class="contact-avatar" aria-hidden="true">AB</div>
+        <div class="contact-copy">
+          <h2 id="chatTitle">איתי מהמוסך</h2>
+          <p id="chatStatus">מחובר · מוכן למשימה</p>
+        </div>
+        <div class="chat-tools">
+          <button class="icon-button" id="doneBtn" type="button" title="סמן פרק כהושלם" aria-label="סמן פרק כהושלם">✓</button>
+          <a class="icon-link" id="openLessonLink" href="chapter-01-intro.html" title="פתח פרק מלא" aria-label="פתח פרק מלא">↗</a>
+        </div>
+      </header>
+
+      <div class="messages" id="messages" aria-live="polite" aria-relevant="additions"></div>
+
+      <form class="composer" id="composer">
+        <input id="messageInput" type="text" placeholder="שאל את איתי על הפרק" autocomplete="off" aria-label="כתוב הודעה">
+        <button class="send-button" type="submit" aria-label="שלח הודעה">➤</button>
+      </form>
+    </section>
+  </main>
+
+  <div class="status-modal" id="statusModal" hidden>
+    <div class="status-dialog" id="statusViewer" role="dialog" aria-modal="true" aria-labelledby="statusModalTitle">
+      <div class="status-bars" id="statusBars"></div>
+      <header class="status-header">
+        <div class="status-icon" id="statusIcon" aria-hidden="true"></div>
+        <div class="status-owner"><b>AutoBro</b><span id="statusTime">עכשיו</span></div>
+        <button class="status-close" id="statusClose" type="button" aria-label="סגור סטטוס">×</button>
+      </header>
+      <img class="status-photo" id="statusPhoto" alt="" draggable="false">
+      <div class="status-caption">
+        <p class="status-kicker">טיפ מהמוסך</p>
+        <h2 id="statusModalTitle"></h2>
+        <p id="statusModalText"></p>
+        <span>הקשה למעבר · לחיצה ארוכה לעצירה</span>
+      </div>
+      <button class="status-hit status-hit-prev" id="statusPrev" type="button" aria-label="סטטוס קודם"></button>
+      <button class="status-hit status-hit-next" id="statusNext" type="button" aria-label="סטטוס הבא"></button>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="whatsapp-pages.js"></script>
+  <script src="whatsapp-lessons.js"></script>
+  <script src="whatsapp-app.js"></script>
+</body>
+</html>

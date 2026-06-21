@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>מסלול ווצאפ · מוסכניקים חיים</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<style>
+:root{
+  --green:#008069;--green2:#00a884;--mint:#d9fdd3;
+  --panel:#f0f2f5;--line:#d8e0dc;--text:#111b21;--muted:#667781;
+  --chat:#efe7dc;--white:#fff;--shadow:0 14px 34px rgba(11,20,26,.14)
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{font-family:Arial,'Segoe UI',sans-serif;background:#eae6df;color:var(--text);overflow:hidden}
+button,input{font-family:inherit}
+
+.app{height:100vh;display:grid;grid-template-rows:60px minmax(0,1fr)}
+.top{height:60px;background:var(--green);color:#fff;display:flex;align-items:center;gap:12px;padding:0 18px;position:relative}
+.avatar-main{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(145deg,#15c26b,#075e54);color:#fff;font-weight:900;font-size:18px;flex-shrink:0}
+.brand h1{margin:0;font-size:18px;line-height:1.1}
+.brand p{margin:2px 0 0;font-size:11px;color:rgba(255,255,255,.78)}
+.top-right{margin-inline-start:auto;display:flex;align-items:center;gap:8px}
+.top-link{color:rgba(255,255,255,.85);text-decoration:none;font-size:12px;background:rgba(255,255,255,.12);padding:5px 12px;border-radius:999px}
+.top-link:hover{background:rgba(255,255,255,.22)}
+.live-pill{display:flex;align-items:center;gap:5px;background:rgba(0,0,0,.18);padding:4px 10px;border-radius:999px;font-size:11px;font-weight:700}
+.live-dot{width:7px;height:7px;border-radius:50%;background:#4ade80;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.3)}}
+
+.demo-banner{background:#f59e0b;color:#000;font-size:12px;font-weight:700;text-align:center;padding:4px 12px;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer}
+.demo-banner a{color:#000;font-weight:900}
+
+.shell{height:calc(100vh - 60px);max-width:1480px;width:100%;margin:0 auto;padding:12px;display:grid;grid-template-columns:minmax(0,1fr) 400px;gap:0;overflow:hidden}
+.pane{background:var(--white);min-height:0;overflow:hidden;box-shadow:0 1px 2px rgba(11,20,26,.16);border-right:1px solid var(--line);display:grid;grid-template-rows:auto auto minmax(0,1fr)}
+.chat-section{background:var(--chat);min-height:0;overflow:hidden;box-shadow:0 1px 2px rgba(11,20,26,.16);display:grid;grid-template-rows:60px minmax(0,1fr) 52px;position:relative}
+.chat-section::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(17,27,33,.04) 1px,transparent 1.2px);background-size:24px 24px;pointer-events:none;z-index:0}
+
+.sidebar-search{padding:8px 12px;background:var(--white);border-bottom:1px solid var(--line)}
+.sidebar-search input{width:100%;height:36px;border:0;border-radius:9px;background:var(--panel);padding:0 14px;font-size:14px;color:#3b4a54;outline:none}
+.sidebar-header{padding:8px 14px;background:var(--panel);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between}
+.sidebar-header span{font-size:12px;font-weight:700;color:var(--muted)}
+.sidebar-header strong{font-size:12px;color:var(--green);font-weight:900}
+.thread-list{overflow-y:auto;scrollbar-width:thin}
+.thread{display:flex;align-items:center;gap:10px;min-height:70px;padding:8px 12px;border-bottom:1px solid #e9edef;cursor:pointer;background:var(--white);transition:.12s;position:relative}
+.thread:hover,.thread.active{background:#f5f6f6}
+.thread.active::after{content:"";position:absolute;right:0;top:0;bottom:0;width:3px;background:var(--green2)}
+.thread-pic{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;font-size:22px;flex-shrink:0}
+.thread-info{min-width:0;flex:1}
+.thread-name{font-size:15px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:3px}
+.thread-preview{font-size:12.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.thread-meta{flex-shrink:0;text-align:start;display:flex;flex-direction:column;align-items:flex-start;gap:4px}
+.thread-time{font-size:11px;color:var(--muted);white-space:nowrap}
+.badge{display:inline-grid;place-items:center;min-width:19px;height:19px;border-radius:999px;background:#25d366;color:#fff;font-size:11px;font-weight:800}
+
+.chat-head{position:relative;z-index:1;height:60px;background:var(--panel);border-bottom:1px solid #d1d7db;display:flex;align-items:center;gap:10px;padding:0 12px}
+.back-btn{display:none;width:36px;height:36px;border:0;border-radius:50%;background:transparent;color:#54656f;font-size:22px;cursor:pointer}
+.contact-pic{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font-size:20px;flex-shrink:0;position:relative}
+.contact-pic::after{content:"";position:absolute;left:1px;bottom:1px;width:9px;height:9px;border:2px solid var(--panel);background:#25d366;border-radius:50%}
+.contact-info h2{margin:0;font-size:15px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.contact-info p{margin:2px 0 0;font-size:12px;color:var(--green2);font-weight:700}
+.head-actions{margin-inline-start:auto;display:flex;gap:2px}
+.head-btn{width:36px;height:36px;border:0;border-radius:50%;background:transparent;color:#54656f;font-size:18px;cursor:pointer;display:grid;place-items:center}
+.head-btn:hover{background:#e2e7e4}
+
+.messages{position:relative;z-index:1;overflow-y:auto;scrollbar-width:thin;padding:14px 8%;display:flex;flex-direction:column;gap:8px}
+.day-label{align-self:center;background:rgba(255,255,255,.86);color:#54656f;border-radius:8px;font-size:11px;font-weight:700;padding:6px 12px;box-shadow:0 1px .5px rgba(11,20,26,.12)}
+.bubble{max-width:min(560px,76%);border-radius:7.5px;box-shadow:0 1px .5px rgba(11,20,26,.12);font-size:14.5px;line-height:1.5;padding:6px 9px 4px;position:relative;animation:popIn .15s ease both}
+@keyframes popIn{from{opacity:.4;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.bubble.in{align-self:flex-start;background:var(--white);border-start-start-radius:0}
+.bubble.in::before{content:"";position:absolute;top:0;inset-inline-end:-8px;border-top:8px solid var(--white);border-inline-end:8px solid transparent}
+.bubble.new-in{border-inline-start:3px solid var(--green2)}
+.bubble-sender{font-size:12px;font-weight:800;color:var(--green);margin-bottom:3px}
+.bubble-text{color:var(--text);white-space:pre-wrap;word-break:break-word}
+.bubble-footer{display:flex;align-items:center;justify-content:flex-end;gap:6px;margin-top:4px;flex-wrap:wrap}
+.bubble-time{font-size:10.5px;color:var(--muted)}
+.cat-chip{font-size:10px;font-weight:800;padding:2px 7px;border-radius:999px;border:1px solid}
+.cat-מנוע{color:#d97706;border-color:#fbbf24;background:#fffbeb}
+.cat-חשמל{color:#2563eb;border-color:#93c5fd;background:#eff6ff}
+.cat-שלדה{color:#0891b2;border-color:#67e8f9;background:#ecfeff}
+.cat-גיר{color:#7c3aed;border-color:#c4b5fd;background:#f5f3ff}
+.cat-מיזוג{color:#059669;border-color:#6ee7b7;background:#ecfdf5}
+.cat-גוף{color:#ea580c;border-color:#fdba74;background:#fff7ed}
+.cat-כללי{color:var(--muted);border-color:var(--line);background:transparent}
+.cat-אבחון{color:#0e7490;border-color:#67e8f9;background:#ecfeff}
+.cat-דיזל{color:#92400e;border-color:#fbbf24;background:#fffbeb}
+
+.pic-live{background:linear-gradient(135deg,#064e3b,#10b981)}
+.pic-מנוע{background:linear-gradient(135deg,#78350f,#f59e0b)}
+.pic-חשמל{background:linear-gradient(135deg,#1e3a8a,#3b82f6)}
+.pic-שלדה{background:linear-gradient(135deg,#164e63,#06b6d4)}
+.pic-גיר{background:linear-gradient(135deg,#4c1d95,#8b5cf6)}
+.pic-מיזוג{background:linear-gradient(135deg,#14532d,#22c55e)}
+.pic-כללי{background:linear-gradient(135deg,#374151,#6b7280)}
+
+.composer{position:relative;z-index:1;height:52px;background:var(--panel);border-top:1px solid #d1d7db;display:flex;align-items:center;justify-content:center;gap:8px;padding:8px 14px}
+.composer-note{color:var(--muted);font-size:13px;text-align:center}
+.connect-btn{background:var(--green);color:#fff;border:0;border-radius:999px;padding:6px 16px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap}
+.connect-btn:hover{background:var(--green2)}
+.upload-btn{background:rgba(255,255,255,.18);color:#fff;border:1px solid rgba(255,255,255,.35);border-radius:999px;padding:5px 13px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;display:flex;align-items:center;gap:5px;transition:.15s}
+.upload-btn:hover{background:rgba(255,255,255,.3)}
+.import-pill{display:flex;align-items:center;gap:5px;background:rgba(255,193,7,.22);border:1px solid rgba(255,193,7,.5);padding:4px 10px;border-radius:999px;font-size:11px;font-weight:700;color:#ffc107}
+.import-toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#111b21;color:#fff;padding:10px 22px;border-radius:12px;font-size:13px;font-weight:700;z-index:200;animation:slideUp .25s ease both}
+@keyframes slideUp{from{opacity:0;transform:translate(-50%,14px)}to{opacity:1;transform:translate(-50%,0)}}
+
+.empty-state{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px;text-align:center;color:var(--muted);gap:10px}
+.empty-icon{font-size:48px}
+.empty-state h3{margin:0;color:var(--text);font-size:16px}
+
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);display:flex;align-items:center;justify-content:center;z-index:100;padding:20px}
+.overlay-box{background:var(--white);border-radius:16px;padding:28px;max-width:440px;width:100%;box-shadow:var(--shadow)}
+.overlay-box h2{margin:0 0 6px;color:var(--green);font-size:1.2rem}
+.overlay-box p{margin:0 0 14px;color:var(--muted);font-size:13px;line-height:1.55}
+.overlay-box input{width:100%;border:1px solid var(--line);border-radius:8px;padding:9px 12px;font-size:13px;margin-bottom:10px;outline:none;background:#f8fafa;font-family:monospace}
+.overlay-box input:focus{border-color:var(--green)}
+.overlay-box .ob-btn{width:100%;background:var(--green);color:#fff;border:0;padding:11px;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;margin-top:4px}
+.overlay-box .ob-btn:hover{background:var(--green2)}
+.overlay-box .ob-skip{display:block;text-align:center;margin-top:10px;color:var(--muted);font-size:12px;cursor:pointer;text-decoration:underline}
+
+@media(max-width:860px){
+  .shell{padding:0;display:block}
+  .pane,.chat-section{height:calc(100vh - 60px);box-shadow:none;border:0}
+  .chat-section{display:none}
+  .shell.chat-open .pane{display:none}
+  .shell.chat-open .chat-section{display:grid}
+  .back-btn{display:grid}
+  .messages{padding:10px 3% 14px}
+  .bubble{max-width:86%}
+  .top{padding:0 12px}
+  .brand p{display:none}
+}
+</style>
+</head>
+<body>
+
+<div class="app">
+  <header class="top">
+    <div class="avatar-main">🔧</div>
+    <div class="brand">
+      <h1>מסלול ווצאפ</h1>
+      <p>קבוצת המוסכניקים · מידע חי מהשטח</p>
+    </div>
+    <div class="top-right">
+      <div class="live-pill" id="livePill"><div class="live-dot"></div><span id="liveLabel">דמו</span></div>
+      <button class="upload-btn" onclick="document.getElementById('backupInput').click()" title="העלה גיבוי ווצאפ (.txt או .zip)">📂 העלה גיבוי</button>
+      <input type="file" id="backupInput" accept=".txt,.zip" style="display:none" onchange="handleBackupUpload(this)">
+      <a class="top-link" href="index.html">← קורס</a>
+    </div>
+  </header>
+
+  <main class="shell" id="shell">
+    <aside class="pane">
+      <div class="sidebar-search">
+        <input id="searchInput" placeholder="חפש בהודעות..." oninput="onSearch(this.value)">
+      </div>
+      <div class="sidebar-header">
+        <span>ערוצים</span>
+        <strong id="totalCount">טוען...</strong>
+      </div>
+      <div class="thread-list" id="threadList"></div>
+    </aside>
+
+    <section class="chat-section">
+      <div class="chat-head">
+        <button class="back-btn" id="backBtn" onclick="goBack()">‹</button>
+        <div class="contact-pic" id="contactPic">📡</div>
+        <div class="contact-info">
+          <h2 id="chatTitle">לייב — כל ההודעות</h2>
+          <p id="chatSub">מקבל עדכונים בזמן אמת</p>
+        </div>
+        <div class="head-actions">
+          <button class="head-btn" title="חבר Firebase" onclick="showConfig()">⚙</button>
+        </div>
+      </div>
+      <div class="messages" id="messagesEl">
+        <div class="empty-state">
+          <div class="empty-icon">📡</div>
+          <h3>בחר ערוץ</h3>
+          <p>בחר קטגוריה מהרשימה</p>
+        </div>
+      </div>
+      <div class="composer">
+        <span class="composer-note" id="composerNote">📖 קריאה בלבד · הודעות מגיעות מהקבוצה</span>
+        <button class="connect-btn" onclick="showConfig()" id="connectBtn">חבר Firebase</button>
+      </div>
+    </section>
+  </main>
+</div>
+
+
+<script type="module">
+// ── Demo data (realistic mechanics messages) ─────────────────────────────
+const now = Date.now();
+const m = (sec, sender, text, cat) => ({
+  id: Math.random().toString(36).slice(2),
+  text, sender, category: cat,
+  timestamp: { toDate: () => new Date(now - sec * 1000) },
+  isDemo: true
+});
+
+const DEMO = [
+  /* ── מנוע ─────────────────────────────────────────────────────── */
+  m(30,   'איתי כהן',    'לקוח הגיע עם BMW 318 2019 — P0171 (מצב דליל). בדקתי MAF, חיישן לחץ, אינטייק — הכל נראה תקין. ממשיך לחפש דליפת ואקום קטנה', 'מנוע'),
+  m(200,  'מוטי לוי',    'P0420 על טויוטה קורולה 2017. הנחתי מדי קדמי לפני 3 חודשים. כנראה לא כויל נכון — גרם לדלדול מהיר של הקטליזטור', 'מנוע'),
+  m(540,  'איתי כהן',    'עדכון BMW: שפה קטנה על צינור אינטייק אחרי intercooler. תיקון אפוקסי + איפוס אדפטציות — P0171 נעלם. לקוח מרוצה 💪', 'מנוע'),
+  m(700,  'מוטי לוי',    'שאלה: מה מתח תקין O2 לפני קטליזטור בטויוטה? רואה תנודות 0.1–0.9V ב-800ms. נראה תקין אבל לקוח לחוץ', 'מנוע'),
+  m(850,  'רמי ישראל',   'תנודות 0.1–0.9V ב-500–1000ms — בריא לחלוטין. אם תקוע ב-0.45V — שם הבעיה. שלך עובד מצוין ✅', 'מנוע'),
+  m(1300, 'יוסי ביטון',  'מישהו מכיר P2096 על מאזדה CX-5 2022? post-cat fuel trim. שמעתי שיש TSB מהיצרן שמנקה את זה בלי החלפת חלק', 'מנוע'),
+  m(1500, 'רועי נחמיאס', 'יוסי — כן, TSB 09-009/2023. עדכון ECU ב-MDARS. ספ"ח מאזדה יכולים לבצע בחינם בתקופת אחריות 💡', 'מנוע'),
+  m(4200, 'שלמה אברהם',  'P0300 על סקודה אוקטביה 2018 — misfire אקראי בכל הצילינדרים. בדקתי קוילים, מצתים — תקין. חשוב VVT solenoid, מדדתי לחץ שמן — נמוך', 'מנוע'),
+  m(4500, 'איתי כהן',    'שלמה — לחץ שמן נמוך + VVT = בעיה קלאסית. החלף שמן קודם, נקה solenoid, מדוד שוב. ראיתי כזה ב-Skoda ב-שנה שעברה', 'מנוע'),
+  m(5100, 'יוסי ביטון',  'טיפ חשוב: לפני שמחליפים MAF — נקו אותו קודם ב-MAF Cleaner, ממתינים 15 דקות. 70% מהמקרים הקוד נעלם ולא צריך חלק חדש 🔧', 'מנוע'),
+  m(7200, 'רמי ישראל',   'הגיע היום אאודי A4 עם P0010 + P0011 — VVT מתקדם ומאחר מדי. בדקתי שמן — שחור וסמיך. החלפת שמן + ניקוי solenoid פתרו הכל. 45 דקות', 'מנוע'),
+
+  /* ── חשמל ─────────────────────────────────────────────────────── */
+  m(210,  'דני פרץ',     'טסלה מודל 3 2021 — SOH 91% אחרי 45,000 ק"מ. לקוח מתלונן על טווח. הסברתי שזה נורמלי, BMS מאוזן, 96 תאים תקינים', 'חשמל'),
+  m(1100, 'דני פרץ',     'עדכון טסלה: הסכים לבדיקת cell balancing כל שנה. ב-90K ק"מ כנראה ירידה נוספת של 4-5%. הסוללה בריאה', 'חשמל'),
+  m(3600, 'נועה גרין',   'שאלה: U0100 על קיה ספורטג׳ 2020 — Lost Communication with ECM. כל הנורות נדלקו בו-זמנית. כבר ניתקתי בטרייה, לא עזר', 'חשמל'),
+  m(3800, 'דני פרץ',     'נועה — U-codes זה תמיד CAN bus קודם. מדדי עמידות בין CAN H/L: צריך לראות 60Ω. אם לא — חפשי שבר או קצר בקו', 'חשמל'),
+  m(3950, 'נועה גרין',   'מצאתי! כבל CAN H נחתך מתחת למושב הנהג — כנראה עכבר. תיקון הדבקה + בידוד, כל הנורות כבו 🎉', 'חשמל'),
+  m(5800, 'רועי נחמיאס', 'אלטרנטור של רנו קליאו 2019 ייצר 12.1V בריצה — בריא ברקע. תחת עומס (מזגן + אורות) ירד ל-11.8V. החלפתי, עכשיו 14.2V תחת עומס 🔋', 'חשמל'),
+  m(6400, 'יוסי ביטון',  'תזכורת לקבוצה: רכב היברידי — אסור לעבוד על HV system בלי הדרכה. אפילו כבל אחד לא נכון = 400V. תמיד ניתוק שירות ואחסון כפפות 10kV', 'חשמל'),
+
+  /* ── שלדה ─────────────────────────────────────────────────────── */
+  m(420,  'אריה שפירא',  'מרצדס E350 2018 — רעש רוחש מלפנים שמאל בנסיעה. upper control arm בוש קרוע. 2.5 שעות עבודה + חלק OEM', 'שלדה'),
+  m(1700, 'אריה שפירא',  'הונדה אקורד 2016 — ABS לא יציב בבלימה. C0035 = חיישן מהירות גלגל קדמי שמאל. 45 דקות עבודה, OEM part', 'שלדה'),
+  m(4800, 'מוטי לוי',    'מזדה 3 2020 — רעש "קליק קליק" בפנייה שמאלה. cv joint קדמי שמאל בהחלט. שמן יצא מהגומי. ציר שלם יותר זול מתיקון — 380 ש"ח', 'שלדה'),
+  m(6000, 'שלמה אברהם',  'טיפ alignment: תמיד לאחר החלפת זרוע שליטה — חובה אלינמנט. ראיתי היום מכונית שצמיג שרוף בגלל שלא עשו אחרי תיקון. 800 ש"ח צמיג', 'שלדה'),
+  m(8400, 'נועה גרין',   'היונדאי טוסון 2021 — הגה לא חוזר למרכז אחרי פנייה. בדקתי: EPS motor תקין, בעיה בחיישן SAS לא כויל. כיול אחרי alignment פתר', 'שלדה'),
+
+  /* ── גיר ──────────────────────────────────────────────────────── */
+  m(300,  'רועי נחמיאס', 'גולף 7 DSG — חריקה בהעברה 2→3. Slip קטן בגילאי תאוצה. תכנות מחדש ב-VCDS + עדכון Mechatronic פתר 👍', 'גיר'),
+  m(1900, 'רמי ישראל',   'שאלה: שמן לתיבת DSG 7 מהירויות DQ200? לקוח משתמש ב-aftermarket ואני לא בטוח', 'גיר'),
+  m(2100, 'רועי נחמיאס', 'רמי — G052182A2 בלבד! Aftermarket יכול לגרום לחריקת clutch. מנה כל 40,000 ק"מ / 4 שנים. לא לוותר על זה', 'גיר'),
+  m(5400, 'דני פרץ',     'קיה סורנטו 2019 אוטומטי — פיגור של 2 שניות בקיק-דאון מ-D. בדקתי: שמן ATF כהה ומעוכן. החלפה מלאה (flush) + פילטר = מכונית אחרת לגמרי', 'גיר'),
+  m(6600, 'איתי כהן',    'CVT של ניסאן ג׳ וק 2018 — רעש בנסיעה ישרה. בדקתי לחץ — נמוך. שמן CVT הוחלף ל-aftermarket. החלפה ל-Nissan NS-3 פתרה. CVT = שמן מקורי תמיד!', 'גיר'),
+  m(8000, 'שלמה אברהם',  'תזכורת: תיבת גיר אוטומטית לא אוהבת נסיעה ב-N בירידות. יוצר wear מוגבר על valve body. הסבירו ללקוחות שלכם', 'גיר'),
+
+  /* ── מיזוג ────────────────────────────────────────────────────── */
+  m(150,  'שלמה אברהם',  'הונדה CR-V 2020 — מזגן לא מקרר. לחצים: 28 PSI נמוך, 280 PSI גבוה. קומפרסור עובד אבל מלכוד. מחפש גורם', 'מיזוג'),
+  m(950,  'שלמה אברהם',  'עדכון מיזוג: שסתום הרחבה תקוע סגור = לחצים לא מאוזנים. החלפה, כיוון ל-35/210 PSI — קירור מצוין ❄️', 'מיזוג'),
+  m(3000, 'מוטי לוי',    'שאלה חשובה: מה החוק לגבי עבודה על מיזוג בלי רישיון קירור?', 'מיזוג'),
+  m(3300, 'שלמה אברהם',  'מוטי — תקנות גז פלואורי 517/2014. חייבים רישיון קטגוריה I. קורס ~1,200 ש"ח, משתלם מאוד', 'מיזוג'),
+  m(6900, 'נועה גרין',   'ריח רע מהמזגן של יונדאי i35? תמיד זה פטריות על האבפורטור. פתרון: תרסיס אנטי-פטריות + החלפת פילטר מגהץ + ריצה 10 דקות בלי מיזוג', 'מיזוג'),
+  m(7800, 'אריה שפירא',  'לקוח מגיע עם "מזגן עובד אבל לא מספיק קר". לפני שנוגעים בגז — בדקו מסנן מגהץ! 60% מהמקרים זה רק מסנן סתום. 5 דקות עבודה', 'מיזוג'),
+
+  /* ── כללי ─────────────────────────────────────────────────────── */
+  m(2400, 'יוסי ביטון',  'טיפ זהב: לקוח עם "האוטו חלש" — OBD scan ← לחץ דלק ← compression test. רק אז מחליפים. מונע טעויות יקרות 💯', 'כללי'),
+  m(2700, 'איתי כהן',    'הסכמה מלאה. ראיתי תיבת גיר שהוחלפה לשווא כי לא בדקו קודם חיישן מהירות. 4,500 ש"ח מיותרים ללקוח 😤', 'כללי'),
+  m(7500, 'רמי ישראל',   'שאלת כלים: מה כולם ממליצים על מולטימטר? אני משתמש ב-Fluke 115 כבר 8 שנים, אף פעם לא איכזב', 'כללי'),
+  m(7650, 'מוטי לוי',    'Fluke 115 זהב! אני גם. לסורק — Launch X431 Pro בשביל הרב-יצרנות, VCDS לוואג. אל תחסכו על כלי אבחון', 'כללי'),
+  m(9000, 'יוסי ביטון',  'כלל שעובד לי: כשלקוח שואל "כמה יעלה לי?" — תמיד אמרי "לאחר אבחון". הצעת מחיר בלי בדיקה = בעיות. שומר על אמון לאורך שנים 🤝', 'כללי'),
+
+  /* ── אבחון ────────────────────────────────────────────────────── */
+  m(2900, 'נועה גרין',   'שיטת אבחון שעובדת לי: 1. OBD קודם 2. Freeze Frame 3. Live Data 4. נבנה היפותזה 5. מבדק ממוקד 6. מתקן 7. Trip drive. לא דולגים שלבים!', 'אבחון'),
+  m(3200, 'איתי כהן',    'נועה — מסכים 100%. ראיתי טכנאי שדילג לשלב 6 ישר — החליף חלשים טובים. אבחון זה לא ניחוש, זה מדע', 'אבחון'),
+  m(5600, 'רמי ישראל',   'טיפ לאוסילוסקופ: גל O2 תקין נראה כמו גל סינוס 0.1–0.9V ב-1Hz. גל שטוח = מת. גל ב-0.45V קבוע = הרעלת ליד. שמרו על תמונות לתיעוד', 'אבחון'),
+  m(7000, 'דני פרץ',     'Data Logger טיפ: תמיד הוסיפו RPM + TPS + MAP + O2 + LTFT בו-זמנית. תמונה מלאה של מנוע בנסיעה. 15 דקות של לוג = גילויים שלא ראיתם בסטטי', 'אבחון'),
+  m(8700, 'שלמה אברהם',  'Intermittent fault — הכי קשה. שיטה: התקינו Data Logger ללקוח ל-3 ימים. כשהתקלה חוזרת — הלוג מצלם אוטומטית. פתרתי 4 מקרים כאלה בחודש האחרון', 'אבחון'),
+  m(9500, 'נועה גרין',   'תזכורת: Freeze Frame שווה זהב. מראה מה קרה ברגע התקלה — RPM, load, temp, speed. קוד בלי Freeze Frame = חצי מידע בלבד', 'אבחון'),
+
+  /* ── דיזל ─────────────────────────────────────────────────────── */
+  m(4000, 'אריה שפירא',  'DPF של פורד טרנזיט 2021 — נסתם אחרי 90,000 ק"מ. לקוח נוסע קצר בלבד ולא מאפשר Regen אוטומטי. הסברתי: חייב נסיעה מעל 80 קמ"ש 20 דקות', 'דיזל'),
+  m(4200, 'יוסי ביטון',  'Forced DPF Regen ב-אופן ידני עם סורק. אם לא עוזר — ניקוי DPF בלחץ מים מיוחד. לפני שממליצים להחליף — תמיד נסו ניקוי קודם', 'דיזל'),
+  m(5200, 'רמי ישראל',   'EGR על מרצדס ספרינטר 2019 — סתום לחלוטין. ניקוי כימי לא עזר. החלפה. בדרך כלל EGR נסתם כל 120,000 ק"מ בדיזל. שווה כניסה קבועה בשירות', 'דיזל'),
+  m(6200, 'נועה גרין',   'מצת להשכמה (Glow plug) של טויוטה לנד קרוזר דיזל — 4 מתוך 8 שרופים. תנגודת תקינה: 0.5–4Ω. מעל 10Ω = מת. בדיקה עם מולטימטר = 10 דקות', 'דיזל'),
+  m(6800, 'איתי כהן',    'לחץ common rail: בדיזל מודרני 1,800–2,000 bar בהאצה. מתחת ל-1,500 bar = משאבה או רגולטור. בדיקה עם סורק תומך = חובה לפני נגיעה בזרקים', 'דיזל'),
+  m(8200, 'שלמה אברהם',  'טיפ זרקים: אחרי החלפת זרק דיזל — חייב קידוד ל-ECU. בלי קידוד המנוע עולה רועד ומפסיד הספק. כל זרק יש מספר סידורי ייחודי', 'דיזל'),
+  m(9200, 'אריה שפירא',  'AdBlue (SCR) על וולוו XC90 2022 — אזהרה "ניקוי פליטות". ריק? מלאו. אם עדיין? NOx sensor. לקוח אחד נסע בלי AdBlue — ECU נעל מנוע ל-8Kkm', 'דיזל'),
+];
+
+// ── Channels ─────────────────────────────────────────────────────────────
+const CHANNELS = [
+  { id:'live',   label:'📡 לייב',    icon:'📡', pic:'pic-live',   filter:null     },
+  { id:'מנוע',   label:'🔩 מנוע',   icon:'🔩', pic:'pic-מנוע',   filter:'מנוע'   },
+  { id:'חשמל',   label:'⚡ חשמל',   icon:'⚡', pic:'pic-חשמל',   filter:'חשמל'   },
+  { id:'שלדה',   label:'🛞 שלדה',   icon:'🛞', pic:'pic-שלדה',   filter:'שלדה'   },
+  { id:'גיר',    label:'⚙️ גיר',    icon:'⚙️',pic:'pic-גיר',    filter:'גיר'    },
+  { id:'מיזוג',  label:'❄️ מיזוג',  icon:'❄️', pic:'pic-מיזוג',  filter:'מיזוג'  },
+  { id:'אבחון',  label:'🔍 אבחון',  icon:'🔍', pic:'pic-אבחון',  filter:'אבחון'  },
+  { id:'דיזל',   label:'⛽ דיזל',   icon:'⛽', pic:'pic-דיזל',   filter:'דיזל'   },
+  { id:'כללי',   label:'💬 כללי',   icon:'💬', pic:'pic-כללי',   filter:'כללי'   },
+];
+
+// ── State ─────────────────────────────────────────────────────────────────
+let allMessages = [...DEMO];
+let activeChannel = null, unsub = null, searchText = '', isLive = false;
+
+// ── Utils ─────────────────────────────────────────────────────────────────
+const esc = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+function timeStr(ts) {
+  if (!ts) return '';
+  const d = ts.toDate ? ts.toDate() : new Date(ts);
+  const diff = (Date.now() - d) / 1000;
+  if (diff < 60)    return 'עכשיו';
+  if (diff < 3600)  return `${Math.floor(diff/60)} דק׳`;
+  if (diff < 86400) return d.toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit'});
+  return d.toLocaleDateString('he-IL',{day:'numeric',month:'numeric'});
+}
+
+// ── Render sidebar ────────────────────────────────────────────────────────
+function renderThreads() {
+  const q = searchText.toLowerCase();
+  document.getElementById('threadList').innerHTML = CHANNELS.map(ch => {
+    let msgs = ch.filter ? allMessages.filter(m => m.category === ch.filter) : allMessages;
+    if (q) msgs = msgs.filter(m => m.text.toLowerCase().includes(q) || m.sender.toLowerCase().includes(q));
+    const last = msgs[0];
+    const active = activeChannel?.id === ch.id;
+    return `<div class="thread${active?' active':''}" data-id="${ch.id}">
+      <div class="thread-pic ${ch.pic}">${ch.icon}</div>
+      <div class="thread-info">
+        <div class="thread-name">${ch.label}</div>
+        <div class="thread-preview">${last ? esc(last.text.slice(0,42))+'...' : 'אין הודעות עדיין'}</div>
+      </div>
+      <div class="thread-meta">
+        <div class="thread-time">${last ? timeStr(last.timestamp) : ''}</div>
+        ${msgs.length ? `<div class="badge">${Math.min(msgs.length,99)}</div>` : ''}
+      </div>
+    </div>`;
+  }).join('');
+  document.querySelectorAll('.thread').forEach(el =>
+    el.addEventListener('click', () => {
+      const ch = CHANNELS.find(c => c.id === el.dataset.id);
+      if (ch) openChannel(ch);
+    })
+  );
+  document.getElementById('totalCount').textContent = `${allMessages.length} הודעות`;
+}
+
+// ── Render messages ────────────────────────────────────────────────────────
+function renderMessages(highlightFirst = false) {
+  const el = document.getElementById('messagesEl');
+  if (!activeChannel) return;
+  const q = searchText.toLowerCase();
+  let msgs = activeChannel.filter
+    ? allMessages.filter(m => m.category === activeChannel.filter)
+    : allMessages;
+  if (q) msgs = msgs.filter(m => m.text.toLowerCase().includes(q) || m.sender.toLowerCase().includes(q));
+  if (!msgs.length) {
+    el.innerHTML = `<div class="empty-state"><div class="empty-icon">${activeChannel.icon}</div><h3>אין הודעות עדיין</h3><p>הודעות מהקבוצה יופיעו כאן</p></div>`;
+    return;
+  }
+  el.innerHTML = `<div class="day-label">היום · ${activeChannel.label}</div>` +
+    [...msgs].reverse().map((m, i) => `
+      <div class="bubble in${highlightFirst && i===msgs.length-1?' new-in':''}">
+        <div class="bubble-sender">${esc(m.sender)}</div>
+        <div class="bubble-text">${esc(m.text)}</div>
+        <div class="bubble-footer">
+          <span class="cat-chip cat-${m.category||'כללי'}">${m.category||'כללי'}</span>
+          <span class="bubble-time">${timeStr(m.timestamp)}${m.isDemo?' · דמו':''}</span>
+        </div>
+      </div>`).join('');
+  el.scrollTop = el.scrollHeight;
+}
+
+// ── Open channel ──────────────────────────────────────────────────────────
+function openChannel(ch) {
+  activeChannel = ch;
+  document.getElementById('contactPic').textContent = ch.icon;
+  document.getElementById('contactPic').className = `contact-pic ${ch.pic}`;
+  document.getElementById('chatTitle').textContent = ch.label;
+  const count = ch.filter ? allMessages.filter(m => m.category === ch.filter).length : allMessages.length;
+  document.getElementById('chatSub').textContent = `${count} הודעות${isLive?' · עדכון חי':''}`;
+  document.getElementById('shell').classList.add('chat-open');
+  renderThreads();
+  renderMessages();
+}
+
+window.goBack  = () => document.getElementById('shell').classList.remove('chat-open');
+window.onSearch = v => { searchText = v; renderThreads(); renderMessages(); };
+
+// ── Firebase config ────────────────────────────────────────────────────────
+// ── Live feed from Netlify function (polling every 10s) ──────────────────
+const API = '/api/messages';
+let pollTimer = null;
+
+async function fetchLive() {
+  try {
+    const res  = await fetch(API);
+    if (!res.ok) return;
+    const live = await res.json();
+    if (!Array.isArray(live)) return;
+
+    // normalize timestamps
+    const normalized = live.map(m => ({
+      ...m,
+      timestamp: m.serverTimestamp
+        ? { toDate: () => new Date(m.serverTimestamp) }
+        : m.timestamp,
+    }));
+
+    const hadLive = isLive;
+    isLive = normalized.length > 0;
+    allMessages = isLive ? normalized : DEMO;
+
+    document.getElementById('liveLabel').textContent = isLive ? 'חי' : 'דמו';
+    document.getElementById('connectBtn').style.display = 'none';
+    document.getElementById('composerNote').textContent = isLive
+      ? '📡 מחובר לקבוצה · עדכון כל 10 שניות'
+      : '⏳ ממתין להודעות מהבוט...';
+
+    renderThreads();
+    if (activeChannel) renderMessages(!hadLive && isLive);
+  } catch { /* network error — keep demo */ }
+}
+
+function startPolling() {
+  fetchLive();
+  pollTimer = setInterval(fetchLive, 10000);
+}
+
+// ── Demo: simulate new message every 25 seconds ──────────────────────────
+function simulateNewMessage() {
+  if (isLive) return; // stop simulation once real data arrives
+  const senders = ['איתי כהן','מוטי לוי','שלמה אברהם','דני פרץ','רועי נחמיאס'];
+  const cats    = ['מנוע','חשמל','שלדה','גיר','מיזוג','כללי'];
+  const texts   = [
+    'נכנסה שברולט קמארו 2018 — רעד בגה"ה. בדקתי: ספרינג קדמי שמאל שבור. החלפה + איזון גלגלים',
+    'P0300 על מיצובישי אאוטלנדר 2019 — תפרות אקראיות. בדקתי: כבל בוזי 2 קרוע קרוב לסוגר',
+    'מצבר של הונדה יאז 2021 מת — 11.8V במנוחה. הלקוח 4 שנים. החלפה ל-70Ah AGM',
+    'שאלה: האם יש הבדל בין Bosch ו-Denso במסנן אוויר לסוזוקי ויטרה?',
+    'טיפ: תמיד בדקו תנגודת חוטי בוזי לפני שמחליפים מצת — חוסך 200 ש"ח ללקוח',
+  ];
+  const newMsg = {
+    id: Math.random().toString(36).slice(2),
+    text: texts[Math.floor(Math.random()*texts.length)],
+    sender: senders[Math.floor(Math.random()*senders.length)],
+    category: cats[Math.floor(Math.random()*cats.length)],
+    timestamp: { toDate: () => new Date() },
+    isDemo: true,
+  };
+  allMessages.unshift(newMsg);
+  renderThreads();
+  if (activeChannel) renderMessages(true);
+}
+
+// ── Init ──────────────────────────────────────────────────────────────────
+renderThreads();
+openChannel(CHANNELS[0]);
+startPolling();
+setInterval(simulateNewMessage, 25000);
+
+// ── WhatsApp backup import ──────────────────────────────────────────────
+const CAT_KEYWORDS = {
+  'מנוע':  ['מנוע','שמן','קירור','צילינדר','בוכנה','טורבו','דלק','הזרקה','פלט','קרטר'],
+  'חשמל':  ['חשמל','בטריה','מצבר','אלטרנטור','ecu','חיישן','נורה','פיוז','can','דינמו'],
+  'שלדה':  ['שלדה','בלמים','צמיג','גלגל','מתלה','ספרינג','זרוע','היגוי','דיסק','abs'],
+  'גיר':   ['גיר','הילוכים','קלאץ','כלאץ','תיבה','אוטומט','cvt','dsg'],
+  'מיזוג': ['מזגן','מיזוג','קומפרסור','מאוורר','גז קירור'],
+  'גוף':   ['פח','צבע','קורוזיה','חלון','דלת','מכסה','פגוש'],
+};
+function detectCat(text) {
+  const t = text.toLowerCase();
+  for (const [cat, kws] of Object.entries(CAT_KEYWORDS))
+    if (kws.some(k => t.includes(k))) return cat;
+  return 'כללי';
+}
+
+// Parse WhatsApp export .txt
+// Supports: "DD/MM/YYYY, HH:MM - Sender: text"
+//           "[DD/MM/YYYY, HH:MM:SS] Sender: text"
+function parseWhatsAppTxt(text, mediaMap = {}) {
+  const LINE_RE = /^(?:‎|‏)*(?:\[?(\d{1,2})[.\/](\d{1,2})[.\/](\d{2,4}),\s*(\d{1,2}):(\d{2})(?::\d{2})?\]?\s*[-–]\s*)(.+?):\s(.+)$/;
+  const SYSTEM_RE = /^(?:‎|‏)*(?:\[?\d{1,2}[.\/]\d{1,2}[.\/]\d{2,4},\s*\d{1,2}:\d{2}(?::\d{2})?\]?\s*[-–]\s*)/;
+
+  const lines = text.split('\n');
+  const msgs = [];
+  let cur = null;
+
+  for (const raw of lines) {
+    const line = raw.replace(/\r$/, '');
+    const m = LINE_RE.exec(line);
+    if (m) {
+      if (cur) msgs.push(cur);
+      const [, d, mo, y, h, min, sender, body] = m;
+      const yr = y.length === 2 ? 2000 + +y : +y;
+      const ts = new Date(yr, +mo - 1, +d, +h, +min).getTime();
+      const isMedia = /^\[(?:תמונה|סרטון|קובץ|אנימציה|אודיו|מסמך) נכל|^<Media omitted>|\[קובץ מצורף:/i.test(body.trim());
+      const mediaFile = isMedia ? body.match(/קובץ מצורף:\s*(.+?)\]/)?.[1]?.trim() : null;
+      cur = {
+        id: `imp-${ts}-${Math.random().toString(36).slice(2,6)}`,
+        sender: sender.trim(),
+        text: isMedia ? (mediaFile ? `📎 ${mediaFile}` : '📷 מדיה') : body.trim(),
+        category: detectCat(body),
+        timestamp: { toDate: () => new Date(ts) },
+        serverTimestamp: ts,
+        imported: true,
+        mediaUrl: mediaFile && mediaMap[mediaFile] ? mediaMap[mediaFile] : null,
+      };
+    } else if (cur && line && !SYSTEM_RE.test(line)) {
+      cur.text += '\n' + line;
+    }
+  }
+  if (cur) msgs.push(cur);
+  return msgs.filter(m => m.text.length > 1 && !m.text.startsWith('ההודעות וקריאות'));
+}
+
+function applyImport(msgs, filename) {
+  if (!msgs.length) { showToast('לא נמצאו הודעות בקובץ'); return; }
+  allMessages = msgs.sort((a, b) => b.serverTimestamp - a.serverTimestamp);
+  isLive = true;
+  document.getElementById('liveLabel').textContent = 'גיבוי';
+  document.getElementById('livePill').style.background = 'rgba(255,193,7,.25)';
+  document.getElementById('livePill').style.border = '1px solid rgba(255,193,7,.5)';
+  document.getElementById('connectBtn').style.display = 'none';
+  document.getElementById('composerNote').textContent = `📂 גיבוי: ${filename} · ${msgs.length} הודעות`;
+  renderThreads();
+  if (CHANNELS[0]) openChannel(CHANNELS[0]);
+  showToast(`✅ יובאו ${msgs.length} הודעות מ-${filename}`);
+}
+
+function showToast(msg) {
+  const t = document.createElement('div');
+  t.className = 'import-toast';
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 3500);
+}
+
+async function handleBackupUpload(input) {
+  const file = input.files[0];
+  if (!file) return;
+  input.value = '';
+  showToast('⏳ מעבד קובץ...');
+
+  try {
+    if (file.name.endsWith('.txt')) {
+      const text = await file.text();
+      applyImport(parseWhatsAppTxt(text), file.name);
+    } else if (file.name.endsWith('.zip')) {
+      const zip = await JSZip.loadAsync(file);
+      // Find the .txt chat file
+      const txtEntry = Object.values(zip.files).find(f =>
+        f.name.endsWith('.txt') && !f.dir
+      );
+      if (!txtEntry) { showToast('לא נמצא קובץ טקסט ב-ZIP'); return; }
+      const text = await txtEntry.async('text');
+      // Build media map: filename → blob URL
+      const mediaMap = {};
+      const mediaExts = /\.(jpe?g|png|gif|webp|mp4|mov|avi|pdf|opus|ogg|mp3)$/i;
+      await Promise.all(
+        Object.values(zip.files)
+          .filter(f => !f.dir && mediaExts.test(f.name))
+          .map(async f => {
+            const blob = await f.async('blob');
+            const shortName = f.name.split('/').pop();
+            mediaMap[shortName] = URL.createObjectURL(blob);
+          })
+      );
+      applyImport(parseWhatsAppTxt(text, mediaMap), file.name);
+    } else {
+      showToast('קובץ לא נתמך — השתמש ב-.txt או .zip');
+    }
+  } catch (e) {
+    showToast('שגיאה בעיבוד הקובץ: ' + e.message);
+  }
+}
+</script>
+</body>
+</html>

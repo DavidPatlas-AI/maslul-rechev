@@ -1,0 +1,640 @@
+/* Shared light theme for "מאפס לרכב" lesson pages. */
+:root {
+  color-scheme: light !important;
+  --bg-deep: #f7fbff !important;
+  --bg: #eef5fb !important;
+  --bg-elevated: #ffffff !important;
+  --panel: #ffffff !important;
+  --plate: #ffffff !important;
+  --card: #ffffff !important;
+  --surface: #ffffff !important;
+  --line: #d7e1ed !important;
+  --line-bright: #b8c7d9 !important;
+  --txt: #16202e !important;
+  --text: #16202e !important;
+  --muted: #667085 !important;
+  --chrome1: #1f2937 !important;
+  --chrome2: #475467 !important;
+  --chrome3: #111827 !important;
+  --amber: #c98213 !important;
+  --gold: #d8a338 !important;
+  --blue: #2f6dd0 !important;
+  --teal: #0b8179 !important;
+  --green: #17845f !important;
+  --red: #c9353d !important;
+}
+html, body {
+  background:
+    radial-gradient(900px 420px at 80% -10%, rgba(47,109,208,.12), transparent 62%),
+    radial-gradient(800px 380px at 8% 2%, rgba(216,163,56,.13), transparent 58%),
+    linear-gradient(180deg, #f9fcff 0%, #eef5fb 54%, #f7fafc 100%) !important;
+  color: #16202e !important;
+}
+body::before, body::after {
+  opacity: .35 !important;
+  filter: none !important;
+}
+a { color: inherit; }
+header, main, section, article, footer,
+.wrap, .container, .shell, .panel, .card, .quizCard, .vcard, .modal, .content-card,
+.lesson, .module, .box, .tile, .stat, .metric, .tool, .question, .answer,
+.grid > *, .routeItem, .quickCard, .chapter-card, .topic-card {
+  border-color: #d7e1ed !important;
+}
+.card, .panel, .quizCard, .vcard, .modal, .content-card, .lesson, .module, .box,
+.tile, .stat, .metric, .tool, .question, .answer, .chapter-card, .topic-card,
+.quiz, .controls, .search, input, textarea, select,
+.tab-btn, .btn, button, .opt, .qnext, .pri {
+  box-shadow: 0 12px 34px rgba(30, 41, 59, .08) !important;
+}
+.card, .panel, .quizCard, .vcard, .content-card, .module, .box, .tile, .stat,
+.metric, .tool, .question, .answer, .chapter-card, .topic-card, .controls,
+.search, input, textarea, select {
+  background: rgba(255,255,255,.92) !important;
+  color: #16202e !important;
+}
+.hero, .head, .top, .banner, .intro, .exam-hero, .course-hero, .landing,
+header, .section, .section-card {
+  background:
+    radial-gradient(760px 300px at 18% -12%, rgba(216,163,56,.18), transparent 60%),
+    linear-gradient(135deg, #ffffff 0%, #f3f8fd 58%, #e9f6f4 100%) !important;
+  color: #16202e !important;
+  border-color: #d7e1ed !important;
+}
+h1, h2, h3, h4, .title, .ttl, .nameBig, .ven, .en {
+  color: #121722 !important;
+  text-shadow: none !important;
+}
+p, li, .sub, .note, .desc, .role, .lbl, .sml, .muted, .he, .vhe, .vdesc,
+.spec .k, .count, .file, .hint {
+  color: #667085 !important;
+}
+.badge, .tag, .chip.active, .tab-btn.active, .section-num, .domain, .tier,
+.qfill, .fill {
+  color: #ffffff !important;
+}
+button, .btn, .quizBtn, .qnext, .pri, .opt, .tab-btn, .chip {
+  border-color: #d7e1ed !important;
+}
+button:not(.pri):not(.qnext):not(.quizBtn), .btn:not(.primary), .tab-btn, .chip, .opt {
+  background: #ffffff !important;
+  color: #16202e !important;
+}
+button:hover, .btn:hover, .card:hover, .opt:hover, .tab-btn:hover, .chip:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 42px rgba(30, 41, 59, .12) !important;
+}
+input, textarea, select {
+  outline-color: #2f6dd0 !important;
+}
+.plate, .vplate, .qstim, .qBody, .spec, .fact, .answer-row, .option-row {
+  background: #f8fbff !important;
+  border-color: #d7e1ed !important;
+  color: #16202e !important;
+}
+footer {
+  color: #667085 !important;
+}
+::-webkit-scrollbar-track { background: #eef5fb !important; }
+::-webkit-scrollbar-thumb { background: #b8c7d9 !important; border-radius: 999px; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; }
+}
+
+/* QA contrast pass */
+.card, .panel, .quizCard, .vcard, .content-card, .module, .box, .tile, .stat,
+.metric, .tool, .question, .answer, .chapter-card, .topic-card {
+  opacity: 1 !important;
+}
+.card p, .card li, .panel p, .panel li, .module p, .module li, .box p, .box li,
+.topic-card p, .chapter-card p, .content-card p, .answer, .question,
+.sub, .note, .desc, .role, .lbl, .sml, .muted, .he, .vhe, .vdesc,
+.spec .k, .count, .file, .hint {
+  color: #475467 !important;
+  opacity: 1 !important;
+}
+.card h1, .card h2, .card h3, .panel h1, .panel h2, .panel h3,
+.module h1, .module h2, .module h3, .box h1, .box h2, .box h3 {
+  color: #182230 !important;
+  opacity: 1 !important;
+}
+
+/* QA pass: generated lesson card variants */
+:root { --text-secondary:#475467 !important; --olive:#556b2f !important; }
+.info-card, .base-card, .tab-content, .ranks-table, .fault-card, .scenario-card {
+  background: rgba(255,255,255,.95) !important;
+  border-color: #d7e1ed !important;
+  color: #182230 !important;
+  opacity: 1 !important;
+}
+.info-card h3, .base-card h3, .info-card h2, .base-card h2,
+.info-card .b-name, .base-card .b-name, .info-title {
+  color: #182230 !important;
+  opacity: 1 !important;
+}
+.info-card p, .info-card li, .info-card ul, .info-card ol,
+.base-card p, .base-card li, .base-card .b-location,
+.info-value, .info-label, .card-body, .ranks-table td {
+  color: #475467 !important;
+  opacity: 1 !important;
+}
+
+/* QA pass: exam and chrome-title variants */
+.exam-box {
+  background: #ffffff !important;
+  color: #182230 !important;
+  border: 1px solid #d7e1ed !important;
+  box-shadow: 0 22px 60px rgba(30,41,59,.12) !important;
+}
+.exam-question, .exam-score, .exam-feedback {
+  color: #182230 !important;
+  opacity: 1 !important;
+}
+.exam-progress .dot { background: #cbd5e1 !important; }
+.exam-progress .dot.current { background: #d8a338 !important; }
+.exam-opt {
+  background: #ffffff !important;
+  color: #182230 !important;
+  border-color: #d7e1ed !important;
+}
+h1, .hero h1, header h1, .wrap h1 {
+  -webkit-text-fill-color: currentColor !important;
+  background: none !important;
+  background-clip: border-box !important;
+  -webkit-background-clip: border-box !important;
+  color: #121722 !important;
+  opacity: 1 !important;
+}
+.eyebrow {
+  color: #b56b0b !important;
+  opacity: 1 !important;
+}
+
+/* Car logo gallery: keep the page light, but preserve high-contrast emblem plates. */
+.car-logos-page .plate,
+.brand-logo-page .logo-container {
+  background:
+    radial-gradient(circle at 35% 28%, rgba(255,255,255,.32), transparent 28%),
+    linear-gradient(180deg,#3b4350 0%,#202733 52%,#0d1118 100%) !important;
+  box-shadow: inset 0 1px 10px rgba(255,255,255,.22), inset 0 -12px 20px rgba(0,0,0,.38), 0 14px 28px rgba(30,41,59,.24) !important;
+}
+.car-logos-page .plate::after,
+.brand-logo-page .logo-container::after { display: block !important; opacity: .35 !important; }
+.car-logos-page .plate svg,
+.car-logos-page .plate svg *,
+.brand-logo-page .logo-container svg,
+.brand-logo-page .logo-container svg * {
+  color: revert !important;
+  opacity: 1 !important;
+}
+.car-logos-page .plate svg text,
+.car-logos-page .plate svg tspan,
+.brand-logo-page .logo-container svg text,
+.brand-logo-page .logo-container svg tspan {
+  fill: revert !important;
+  stroke: revert !important;
+}
+.brand-logo-page .logo-container [stroke="#eef2f7"],
+.brand-logo-page .logo-container [stroke="#e7ecf3"] { stroke: #f8fafc !important; }
+.brand-logo-page .logo-container [fill="#eef2f7"],
+.brand-logo-page .logo-container [fill="#e7ecf3"] { fill: #f8fafc !important; }
+.car-logos-page .card,
+.brand-logo-page .brand-card {
+  background: #ffffff !important;
+}
+
+/* IDF vehicle guide: keep schematic plates readable while the page stays light. */
+.idf-vehicles-page .plate,
+.idf-vehicles-page .vplate {
+  background:
+    radial-gradient(circle at 35% 25%, rgba(255,255,255,.25), transparent 30%),
+    linear-gradient(180deg,#3d4636 0%,#20281d 52%,#11160e 100%) !important;
+  box-shadow: inset 0 1px 10px rgba(255,255,255,.18), inset 0 -12px 20px rgba(0,0,0,.42), 0 14px 28px rgba(30,41,59,.2) !important;
+}
+.idf-vehicles-page .plate svg,
+.idf-vehicles-page .plate svg *,
+.idf-vehicles-page .vplate svg,
+.idf-vehicles-page .vplate svg * {
+  opacity: 1 !important;
+}
+.idf-vehicles-page .photo,
+.idf-vehicles-page .vphoto {
+  background:#111827 !important;
+  border-color:#c9d7e7 !important;
+}
+.idf-vehicles-page .visual-pill.live {
+  color:#111827 !important;
+}
+.idf-vehicles-page .chip.active {
+  background: linear-gradient(180deg,#2d3a25,#111827) !important;
+  color:#ffffff !important;
+  border-color:#2d3a25 !important;
+}
+.idf-vehicles-page .chip:not(.active) {
+  color:#253044 !important;
+}
+
+
+/* QA 2026-06-08: keep warning panels readable after light-theme conversion. */
+.vehicle-number-page .recall-section h4,
+.vehicle-number-page .recall-item,
+.vehicle-number-page .recall-item span,
+.vehicle-number-page .recall-item div,
+.vehicle-number-page .recall-item .recall-sev {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+.vehicle-number-page .recall-section h4 {
+  color: #a61b24 !important;
+  font-size: 1rem !important;
+  margin: 0 0 10px !important;
+}
+.vehicle-number-page .recall-item {
+  background: #fff5f5 !important;
+  border: 1px solid #f1b4b8 !important;
+  color: #182230 !important;
+  box-shadow: 0 12px 28px rgba(169, 30, 42, .12) !important;
+}
+.vehicle-number-page .recall-item > span:not(.recall-sev),
+.vehicle-number-page .recall-item .recall-icon {
+  color: #a61b24 !important;
+}
+.vehicle-number-page .recall-sev.high,
+.vehicle-number-page .recall-sev.medium {
+  background: #c9353d !important;
+  color: #ffffff !important;
+  border: 0 !important;
+}
+.vehicle-number-page .security-note,
+.vehicle-number-page .vehicle-security-note {
+  background: #fff5f5 !important;
+  border: 1px solid #f1b4b8 !important;
+  color: #182230 !important;
+}
+.vehicle-number-page .security-note strong,
+.vehicle-number-page .vehicle-security-note strong {
+  color: #a61b24 !important;
+}
+.vehicle-number-page .formula-box {
+  background: #ffffff !important;
+  border: 1px solid #d8a338 !important;
+  color: #8a5a00 !important;
+  opacity: 1 !important;
+  line-height: 1.9 !important;
+  letter-spacing: 0 !important;
+  box-shadow: 0 14px 34px rgba(138, 90, 0, .12) !important;
+}
+
+/* QA 2026-06-08: car logos must stay visible on bright cards, especially iPhone screenshots. */
+.car-logos-page .card {
+  min-height: 188px !important;
+}
+.car-logos-page .card .plate {
+  opacity: 1 !important;
+  filter: none !important;
+  background:
+    radial-gradient(circle at 34% 28%, rgba(255,255,255,.46), transparent 30%),
+    linear-gradient(180deg,#384354 0%,#1e2633 54%,#111827 100%) !important;
+}
+.car-logos-page .card .plate svg,
+.car-logos-page .card .plate svg * {
+  opacity: 1 !important;
+  filter: none !important;
+}
+.car-logos-page .card .plate svg [stroke="#cfd2d7"],
+.car-logos-page .card .plate svg [stroke="#d0d3d8"],
+.car-logos-page .card .plate svg [stroke="#c7cad0"] {
+  stroke: #f8fafc !important;
+}
+.car-logos-page .card .plate svg [fill="#cfd2d7"],
+.car-logos-page .card .plate svg [fill="#d0d3d8"],
+.car-logos-page .card .plate svg [fill="#c7cad0"] {
+  fill: #f8fafc !important;
+}
+@media (max-width: 640px) {
+  .car-logos-page .grid {
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
+  }
+  .car-logos-page .card {
+    min-height: 126px !important;
+    padding: 18px 20px !important;
+    display: grid !important;
+    grid-template-columns: 88px 1fr !important;
+    grid-template-areas: "logo en" "logo he" "logo tags" !important;
+    align-items: center !important;
+    text-align: right !important;
+    column-gap: 16px !important;
+  }
+  .car-logos-page .card .plate {
+    grid-area: logo !important;
+    width: 76px !important;
+    height: 76px !important;
+    margin: 0 !important;
+  }
+  .car-logos-page .card .plate svg {
+    width: 54px !important;
+    height: 54px !important;
+  }
+  .car-logos-page .card .en {
+    grid-area: en !important;
+    color: #16202e !important;
+    font-size: 1.15rem !important;
+    letter-spacing: 0 !important;
+    text-transform: none !important;
+  }
+  .car-logos-page .card .he {
+    grid-area: he !important;
+    color: #475467 !important;
+    font-size: 1rem !important;
+    margin: 0 !important;
+  }
+  .car-logos-page .card .tags {
+    grid-area: tags !important;
+    justify-content: flex-start !important;
+    margin-top: 6px !important;
+  }
+}
+/* QA 2026-06-08: mobile viewport polish for logo gallery and plate checker. */
+@media (max-width: 640px) {
+  .car-logos-page,
+  .vehicle-number-page {
+    overflow-x: hidden !important;
+  }
+  .car-logos-page .wrap,
+  .vehicle-number-page .container {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+    overflow-x: hidden !important;
+  }
+  .car-logos-page header {
+    padding: 34px 0 18px !important;
+    text-align: center !important;
+  }
+  .car-logos-page h1 {
+    font-size: 33px !important;
+    line-height: 1.08 !important;
+    white-space: normal !important;
+    overflow-wrap: normal !important;
+    max-width: 100% !important;
+  }
+  .car-logos-page .sub {
+    font-size: 15px !important;
+    line-height: 1.7 !important;
+    max-width: 330px !important;
+  }
+  .car-logos-page .quizBtn {
+    opacity: 1 !important;
+    visibility: visible !important;
+    background: linear-gradient(180deg,#d8a338,#b9821a) !important;
+    color: #15181d !important;
+    border-color: #d8a338 !important;
+  }
+  .car-logos-page .controls {
+    margin-top: 18px !important;
+  }
+  .car-logos-page .search {
+    width: 100% !important;
+  }
+  .car-logos-page .card {
+    grid-template-columns: 78px minmax(0,1fr) !important;
+    column-gap: 12px !important;
+    padding: 16px 14px !important;
+    overflow: hidden !important;
+  }
+  .car-logos-page .card .plate {
+    width: 70px !important;
+    height: 70px !important;
+    justify-self: center !important;
+  }
+  .car-logos-page .card .plate svg {
+    width: 50px !important;
+    height: 50px !important;
+  }
+  .vehicle-number-page .quick-plates {
+    display: grid !important;
+    grid-template-columns: repeat(2,minmax(0,1fr)) !important;
+    gap: 8px !important;
+    width: 100% !important;
+  }
+  .vehicle-number-page .quick-plate {
+    width: 100% !important;
+    min-width: 0 !important;
+    text-align: center !important;
+    padding: 8px 6px !important;
+  }
+  .vehicle-number-page .plate-input-wrap {
+    max-width: 100% !important;
+    overflow: hidden !important;
+  }
+}
+/* QA 2026-06-08: avoid RTL grid edge clipping on mobile logo cards. */
+@media (max-width: 640px) {
+  .car-logos-page .sec-head,
+  .car-logos-page .grid,
+  .car-logos-page .controls,
+  .car-logos-page #content {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow: hidden !important;
+  }
+  .car-logos-page .sec-head {
+    padding-inline: 4px !important;
+    gap: 8px !important;
+  }
+  .car-logos-page .sec-head .ttl {
+    font-size: 22px !important;
+    min-width: 0 !important;
+  }
+  .car-logos-page .card {
+    display: block !important;
+    position: relative !important;
+    width: 100% !important;
+    min-height: 126px !important;
+    padding: 18px 102px 16px 16px !important;
+    text-align: right !important;
+  }
+  .car-logos-page .card .plate {
+    position: absolute !important;
+    top: 50% !important;
+    right: 16px !important;
+    transform: translateY(-50%) !important;
+    margin: 0 !important;
+  }
+  .car-logos-page .card:hover .plate {
+    transform: translateY(-50%) scale(1.03) !important;
+  }
+  .car-logos-page .card .en,
+  .car-logos-page .card .he,
+  .car-logos-page .card .tags {
+    display: block !important;
+    min-width: 0 !important;
+  }
+  .car-logos-page .card .tags {
+    display: flex !important;
+    justify-content: flex-start !important;
+  }
+}
+/* QA 2026-06-08: prevent right-side capture clipping on RTL mobile pages. */
+@media (max-width: 640px) {
+  body.car-logos-page,
+  body.vehicle-number-page {
+    direction: ltr !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  .car-logos-page .wrap,
+  .car-logos-page header,
+  .car-logos-page .controls,
+  .car-logos-page #content,
+  .car-logos-page .sec-head,
+  .car-logos-page .grid,
+  .car-logos-page .card,
+  .vehicle-number-page .container,
+  .vehicle-number-page header,
+  .vehicle-number-page .search-section,
+  .vehicle-number-page .result-card,
+  .vehicle-number-page footer {
+    direction: rtl !important;
+  }
+}
+/* QA 2026-06-08: place mobile logo badges on the left to avoid the browser chrome edge. */
+@media (max-width: 640px) {
+  .car-logos-page .card {
+    padding: 18px 16px 16px 96px !important;
+  }
+  .car-logos-page .card .plate {
+    right: auto !important;
+    left: 16px !important;
+  }
+  .car-logos-page .sec-head {
+    direction: ltr !important;
+    justify-content: flex-start !important;
+  }
+  .car-logos-page .sec-head .ttl,
+  .car-logos-page .sec-head .cnt {
+    direction: rtl !important;
+  }
+  .car-logos-page .sub {
+    max-width: 300px !important;
+    margin-inline: auto !important;
+  }
+}
+/* QA 2026-06-08: keep logo-card text away from the mobile right edge. */
+@media (max-width: 640px) {
+  .car-logos-page .card .en,
+  .car-logos-page .card .he,
+  .car-logos-page .card .tags {
+    width: 100% !important;
+    max-width: 100% !important;
+    text-align: center !important;
+    justify-content: center !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+  .car-logos-page .card .en {
+    font-size: 1.04rem !important;
+    white-space: normal !important;
+    overflow-wrap: anywhere !important;
+  }
+}
+/* QA 2026-06-08: dark surface contrast guard.
+   Some generated pages keep intentionally dark panels after the global light theme.
+   When a dark surface remains dark, force readable foreground colors inside it. */
+.fault-book .book-left,
+.fault-book .book-header,
+.fault-book .fault-table,
+.fault-book .fault-table tbody,
+.fault-book .fault-table tr,
+.fault-book .fault-table td,
+.fault-book .fault-table td b,
+.fault-book .fault-table td strong,
+.fault-book #noResults {
+  color: #e7eef8 !important;
+  opacity: 1 !important;
+}
+.fault-book .book-left {
+  background: linear-gradient(165deg,#111827,#182230) !important;
+}
+.fault-book .book-header {
+  background: #111827 !important;
+  border-color: rgba(231,238,248,.22) !important;
+}
+.fault-book .fault-table th {
+  color: #f8b44c !important;
+  opacity: 1 !important;
+  border-color: rgba(231,238,248,.35) !important;
+}
+.fault-book .fault-table td {
+  color: #d8e2ef !important;
+  border-color: rgba(231,238,248,.32) !important;
+}
+.fault-book .fault-table td:nth-child(1),
+.fault-book .fault-table td:nth-child(2),
+.fault-book .fault-table td:nth-child(3),
+.fault-book .fault-table td:nth-child(4) {
+  color: #cfd8e5 !important;
+}
+.fault-book .fault-table td:nth-child(2) b,
+.fault-book .fault-table td:nth-child(2) strong {
+  color: #f8fafc !important;
+}
+.fault-book .fault-table td:nth-child(5),
+.fault-book .fault-table td[style*="green"] {
+  color: #35d39a !important;
+}
+.fault-book .fault-table tr:hover td {
+  background: rgba(255,255,255,.07) !important;
+}
+.fault-book .severity-badge {
+  opacity: 1 !important;
+  color: #ffffff !important;
+}
+.fault-book .sev-high { background: rgba(224,49,72,.28) !important; color:#ff8fa3 !important; }
+.fault-book .sev-medium { background: rgba(216,163,56,.24) !important; color:#ffd27a !important; }
+.fault-book .sev-low { background: rgba(24,132,95,.24) !important; color:#8ff0c6 !important; }
+.fault-book .search-input,
+.fault-book .filter-select {
+  background: #ffffff !important;
+  color: #182230 !important;
+  border-color: #d7e1ed !important;
+}
+.fault-book .search-input::placeholder { color:#667085 !important; opacity:1 !important; }
+.fault-book .book-left [style*="var(--muted)"],
+.fault-book .book-left .muted,
+.fault-book .book-left .lbl,
+.fault-book .book-left .hint {
+  color: #b8c7d9 !important;
+  opacity: 1 !important;
+}
+
+/* Generic dark panels used by generated exercises/simulators. */
+.dark-panel, .dark-card, .lab-panel, .sim-panel, .game-panel,
+.challenge, .console, .terminal, .black-panel,
+[class*="dark"]:not(body):not(html) {
+  color: #f8fafc !important;
+}
+.dark-panel p, .dark-panel li, .dark-card p, .dark-card li,
+.lab-panel p, .lab-panel li, .sim-panel p, .sim-panel li,
+.game-panel p, .game-panel li, .console p, .terminal p,
+.black-panel p, .black-panel li,
+[class*="dark"]:not(body):not(html) p,
+[class*="dark"]:not(body):not(html) li,
+[class*="dark"]:not(body):not(html) td {
+  color: #d8e2ef !important;
+  opacity: 1 !important;
+}
+.dark-panel h1, .dark-panel h2, .dark-panel h3,
+.dark-card h1, .dark-card h2, .dark-card h3,
+.lab-panel h1, .lab-panel h2, .lab-panel h3,
+.sim-panel h1, .sim-panel h2, .sim-panel h3,
+.game-panel h1, .game-panel h2, .game-panel h3,
+[class*="dark"]:not(body):not(html) h1,
+[class*="dark"]:not(body):not(html) h2,
+[class*="dark"]:not(body):not(html) h3 {
+  color: #ffffff !important;
+  opacity: 1 !important;
+}
+<script src="site-qa-2026.js" defer></script>

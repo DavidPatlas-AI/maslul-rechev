@@ -1,0 +1,25 @@
+{
+  "name": "מסלול רכב · מאפס לרכב",
+  "short_name": "מסלול רכב",
+  "description": "קורס אוטומוטיבי מקצועי — 80 פרקים, סימולטורים, אבחון רכב",
+  "start_url": "/index.html",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#f4f7fb",
+  "theme_color": "#d83f45",
+  "lang": "he",
+  "dir": "rtl",
+  "categories": ["education"],
+  "icons": [
+    { "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ],
+  "shortcuts": [
+    { "name": "ספריית פרקים", "short_name": "ספרייה", "url": "/index.html#library", "description": "כל 80 הפרקים" },
+    { "name": "קבוצת המוסכנים", "short_name": "מוסכנים", "url": "/whatsapp-mechanic.html", "description": "שיחות מוסכנים חיות" },
+    { "name": "מבחן סיום", "short_name": "מבחן", "url": "/deepseek_html_20260607_176157.html", "description": "100 שאלות" }
+  ],
+  "screenshots": [
+    { "src": "/assets/hero-command-center-2026.png", "sizes": "1280x720", "type": "image/png", "form_factor": "wide" }
+  ]
+}

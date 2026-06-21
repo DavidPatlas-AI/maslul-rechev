@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>אין חיבור · מסלול רכב</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,'Segoe UI',sans-serif;background:#f4f7fb;color:#111827;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:24px;text-align:center}
+.icon{font-size:72px;margin-bottom:20px}
+h1{font-size:28px;font-weight:900;margin-bottom:12px;color:#111827}
+p{color:#475467;font-size:16px;line-height:1.7;max-width:420px;margin-bottom:28px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 24px;background:#d83f45;color:#fff;border-radius:14px;font-weight:900;font-size:15px;text-decoration:none;cursor:pointer;border:none}
+.btn:hover{background:#b32d32}
+.cached-note{margin-top:28px;padding:16px 20px;background:#fff;border:1px solid #d9e3ef;border-radius:16px;font-size:14px;color:#475467;max-width:380px}
+.cached-note b{color:#111827;display:block;margin-bottom:8px}
+</style>
+</head>
+<body>
+<div class="icon">📡</div>
+<h1>אין חיבור לאינטרנט</h1>
+<p>הדף שביקשת לא שמור במכשיר. חבר לאינטרנט ונסה שוב — או עיין בפרקים שכבר נטענו.</p>
+<a class="btn" href="index.html">← חזרה לדף הבית</a>
+<div class="cached-note">
+  <b>💡 טיפ</b>
+  דפים שגלשת בהם כבר שמורים ועובדים גם offline. חזור לאינדקס ופתח פרקים שכבר ביקרת בהם.
+</div>
+<script>
+window.addEventListener('online',()=>location.reload());
+</script>
+</body>
+</html>

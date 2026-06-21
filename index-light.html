@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>אוטוטק 2026 — מסלול מנהל מוסך</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700;800;900&family=Heebo:wght@300;400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+/* ── Design tokens ─────────────────────────────────────────── */
+:root{
+  --bg:#F6F4F0;
+  --surf:#FFFFFF;
+  --surf2:#FAFAF8;
+  --line:#E8E4DC;
+  --line2:#D4CFC6;
+
+  --ink:#1A1915;
+  --ink2:#5C5850;
+  --quiet:#9B9790;
+
+  --acc:#E8820A;
+  --acc-l:#FFF3E0;
+  --acc-d:#B85E00;
+
+  --c-blue:#2563EB;   --c-blue-l:#EFF6FF;
+  --c-slate:#475569;  --c-slate-l:#F1F5F9;
+  --c-lime:#16A34A;   --c-lime-l:#F0FDF4;
+  --c-red:#DC2626;    --c-red-l:#FEF2F2;
+  --c-gold:#CA8A04;   --c-gold-l:#FEFCE8;
+  --c-plum:#7C3AED;   --c-plum-l:#F5F3FF;
+  --c-teal:#0D9488;   --c-teal-l:#F0FDFA;
+  --c-clay:#EA580C;   --c-clay-l:#FFF7ED;
+  --c-sage:#15803D;   --c-sage-l:#F0FDF4;
+
+  --sh-sm:0 1px 3px rgba(0,0,0,.07),0 4px 12px rgba(0,0,0,.05);
+  --sh-md:0 2px 8px rgba(0,0,0,.08),0 8px 24px rgba(0,0,0,.06);
+  --sh-lg:0 8px 24px rgba(0,0,0,.10),0 24px 48px rgba(0,0,0,.08);
+
+  --r:14px;--r-sm:9px;--r-lg:20px;
+  --tr:.2s ease;
+  --lh:1.7;
+}
+
+/* ── Reset & base ───────────────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-family:"Rubik","Heebo","Arial Hebrew",sans-serif;direction:rtl;scroll-behavior:smooth;font-size:15px;line-height:var(--lh)}
+body{background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+input,button{font-family:inherit}
+
+/* ── Nav ────────────────────────────────────────────────────── */
+nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);transition:box-shadow .2s}
+nav.scrolled{box-shadow:var(--sh-sm)}
+.nav-inner{max-width:1180px;margin:0 auto;padding:0 24px;height:60px;display:flex;align-items:center;gap:12px}
+.brand{font-weight:800;font-size:1rem;color:var(--ink);display:flex;align-items:center;gap:8px;white-space:nowrap}
+.brand-badge{background:var(--acc);color:#fff;font-size:.6rem;font-weight:700;padding:2px 6px;border-radius:4px;letter-spacing:.04em;line-height:1.4}
+.nav-links{display:flex;gap:2px;margin-inline-start:auto;list-style:none}
+.nav-links a{display:block;padding:6px 12px;border-radius:8px;font-size:.84rem;font-weight:500;color:var(--ink2);transition:var(--tr);white-space:nowrap}
+.nav-links a:hover{background:var(--bg);color:var(--ink)}
+.nav-links a.on{background:var(--acc-l);color:var(--acc-d);font-weight:700}
+.nav-search-wrap{display:flex;align-items:center;gap:6px;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:7px 12px;transition:border-color .2s}
+.nav-search-wrap:focus-within{border-color:var(--acc)}
+.nav-search-wrap input{background:none;border:none;outline:none;font-size:.84rem;color:var(--ink);width:170px;direction:rtl}
+.nav-search-wrap input::placeholder{color:var(--quiet)}
+@media(max-width:700px){.nav-links,.nav-search-wrap{display:none}}
+
+/* ── Page shell ─────────────────────────────────────────────── */
+.page{max-width:1180px;margin:0 auto;padding:0 24px}
+
+/* ── Hero ───────────────────────────────────────────────────── */
+.hero{padding:56px 0 48px;display:grid;grid-template-columns:1fr 300px;gap:48px;align-items:start}
+@media(max-width:860px){.hero{grid-template-columns:1fr}.hero-card{display:none}}
+
+.hero-eyebrow{display:inline-flex;align-items:center;gap:6px;font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--acc);margin-bottom:16px}
+.hero-eyebrow::before{content:"";display:block;width:18px;height:2px;background:var(--acc);border-radius:1px}
+
+.hero h1{font-weight:900;font-size:clamp(2rem,4.5vw,3.5rem);line-height:1.15;letter-spacing:-.5px;color:var(--ink);margin-bottom:16px}
+.hero h1 strong{color:var(--acc)}
+
+.hero-sub{font-size:1rem;color:var(--ink2);font-weight:400;line-height:1.7;max-width:500px;margin-bottom:28px}
+
+.trust-pills{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:28px}
+.trust-pill{display:flex;align-items:center;gap:6px;background:var(--surf);border:1px solid var(--line);border-radius:99px;padding:6px 14px;font-size:.82rem;font-weight:600;color:var(--ink);box-shadow:var(--sh-sm)}
+.trust-pill-num{font-family:"JetBrains Mono",monospace;font-weight:700;color:var(--acc);direction:ltr;unicode-bidi:isolate}
+
+.hero-btns{display:flex;gap:10px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:7px;padding:13px 24px;border-radius:var(--r-sm);font-weight:700;font-size:.92rem;transition:var(--tr);border:none;cursor:pointer;white-space:nowrap}
+.btn-primary{background:var(--acc);color:#fff;box-shadow:0 4px 14px rgba(232,130,10,.35)}
+.btn-primary:hover{background:var(--acc-d);transform:translateY(-1px);box-shadow:0 6px 20px rgba(232,130,10,.45)}
+.btn-ghost{background:var(--surf);color:var(--ink2);border:1px solid var(--line);box-shadow:var(--sh-sm)}
+.btn-ghost:hover{background:var(--bg);color:var(--ink);border-color:var(--line2)}
+
+/* ── Hero card (stat panel) ─────────────────────────────────── */
+.hero-card{background:var(--surf);border:1px solid var(--line);border-radius:var(--r-lg);padding:24px;box-shadow:var(--sh-md)}
+.hc-title{font-size:.68rem;font-family:"JetBrains Mono",monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--quiet);margin-bottom:16px}
+.hc-path{display:flex;flex-direction:column;gap:0}
+.hc-step{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line);font-size:.84rem;font-weight:600;color:var(--ink)}
+.hc-step:last-child{border-bottom:none}
+.hc-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.hc-step-count{font-family:"JetBrains Mono",monospace;font-size:.7rem;color:var(--quiet);margin-inline-start:auto;direction:ltr;unicode-bidi:isolate}
+.hc-divider{height:1px;background:var(--line);margin:14px 0}
+.hc-total{display:flex;justify-content:space-between;align-items:center;font-size:.84rem}
+.hc-total-label{color:var(--ink2)}
+.hc-total-val{font-family:"JetBrains Mono",monospace;font-weight:700;font-size:1.1rem;color:var(--acc);direction:ltr;unicode-bidi:isolate}
+
+/* ── Journey bar ────────────────────────────────────────────── */
+.journey{background:var(--surf);border:1px solid var(--line);border-radius:var(--r-lg);padding:22px 28px;margin-top:32px;box-shadow:var(--sh-sm)}
+.journey-title{font-size:.72rem;font-family:"JetBrains Mono",monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--quiet);margin-bottom:16px}
+.journey-steps{display:flex;align-items:center;gap:0;overflow-x:auto;scrollbar-width:none}
+.journey-steps::-webkit-scrollbar{display:none}
+.j-step{display:flex;align-items:center;gap:0;flex-shrink:0}
+.j-node{display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;padding:0 4px}
+.j-circle{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;border:2px solid transparent;transition:var(--tr)}
+.j-node:hover .j-circle{transform:scale(1.1)}
+.j-label{font-size:.65rem;font-weight:700;color:var(--ink2);white-space:nowrap;text-align:center;line-height:1.3}
+.j-arrow{font-size:.7rem;color:var(--line2);margin:0 6px;flex-shrink:0;transform:rotate(180deg)}
+
+/* ── Section layout ─────────────────────────────────────────── */
+.sec{margin-top:52px}
+.sec-head{display:flex;align-items:center;gap:10px;margin-bottom:18px}
+.sec-num{font-family:"JetBrains Mono",monospace;font-size:.65rem;font-weight:700;background:var(--acc-l);color:var(--acc-d);padding:2px 8px;border-radius:5px;letter-spacing:.05em}
+.sec-title{font-size:1.1rem;font-weight:800;color:var(--ink)}
+.sec-count{font-family:"JetBrains Mono",monospace;font-size:.68rem;color:var(--quiet);background:var(--surf);border:1px solid var(--line);border-radius:99px;padding:1px 9px;margin-inline-start:auto;direction:ltr;unicode-bidi:isolate}
+
+/* ── Hub cards ──────────────────────────────────────────────── */
+.hub-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+.hub-card{background:var(--surf);border:1px solid var(--line);border-radius:var(--r);padding:22px;display:flex;flex-direction:column;gap:8px;transition:var(--tr);box-shadow:var(--sh-sm);position:relative;overflow:hidden}
+.hub-card::before{content:"";position:absolute;top:0;inset-inline:0;height:3px;background:var(--c,transparent);opacity:0;transition:opacity .2s}
+.hub-card:hover{box-shadow:var(--sh-md);transform:translateY(-3px);border-color:var(--line2)}
+.hub-card:hover::before{opacity:1}
+.hub-icon{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:4px;flex-shrink:0}
+.hub-name{font-size:.92rem;font-weight:700;color:var(--ink)}
+.hub-desc{font-size:.77rem;color:var(--ink2);line-height:1.55;flex:1}
+.hub-cta{font-size:.72rem;font-weight:700;color:var(--acc);margin-top:4px}
+
+/* ── Tool cards ─────────────────────────────────────────────── */
+.tool-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px}
+.tool-card{display:flex;align-items:center;gap:12px;background:var(--surf);border:1px solid var(--line);border-radius:var(--r-sm);padding:14px 16px;transition:var(--tr);box-shadow:var(--sh-sm)}
+.tool-card:hover{box-shadow:var(--sh-md);transform:translateY(-2px);border-color:var(--line2)}
+.tool-icon{width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.tool-name{font-size:.86rem;font-weight:700;color:var(--ink)}
+.tool-desc{font-size:.74rem;color:var(--ink2);line-height:1.4;margin-top:2px}
+
+/* ── Filter ─────────────────────────────────────────────────── */
+.filter-wrap{margin-top:52px}
+.filter-top{display:flex;align-items:baseline;gap:14px;margin-bottom:14px}
+.filter-title{font-size:1.4rem;font-weight:900;color:var(--ink)}
+.filter-count{font-family:"JetBrains Mono",monospace;font-size:.75rem;color:var(--quiet);direction:ltr;unicode-bidi:isolate}
+.search-box{position:relative;max-width:520px;margin-bottom:14px}
+.search-box input{width:100%;background:var(--surf);border:1.5px solid var(--line);border-radius:var(--r-sm);padding:13px 18px 13px 42px;font-size:.92rem;color:var(--ink);direction:rtl;outline:none;transition:border-color .2s,box-shadow .2s;box-shadow:var(--sh-sm)}
+.search-box input::placeholder{color:var(--quiet)}
+.search-box input:focus{border-color:var(--acc);box-shadow:0 0 0 3px rgba(232,130,10,.12)}
+.search-icon{position:absolute;top:50%;left:14px;transform:translateY(-50%);font-size:14px;color:var(--quiet);pointer-events:none}
+.chip-bar{display:flex;flex-wrap:wrap;gap:6px}
+.chip{background:var(--surf);border:1.5px solid var(--line);border-radius:99px;padding:7px 16px;font-size:.78rem;font-weight:600;color:var(--ink2);cursor:pointer;transition:var(--tr);white-space:nowrap;line-height:1}
+.chip:hover{border-color:var(--line2);color:var(--ink);background:var(--surf2)}
+.chip.on{border-color:transparent;color:#fff;font-weight:700;box-shadow:var(--sh-sm)}
+
+/* ── Chapter sections ───────────────────────────────────────── */
+.ch-group{margin-top:36px}
+.ch-group-head{display:flex;align-items:center;gap:10px;margin-bottom:12px;padding-bottom:10px;border-bottom:1.5px solid var(--line)}
+.ch-group-color{width:4px;height:22px;border-radius:2px;flex-shrink:0}
+.ch-group-title{font-size:.96rem;font-weight:800;color:var(--ink)}
+.ch-group-range{font-family:"JetBrains Mono",monospace;font-size:.68rem;color:var(--quiet);direction:ltr;unicode-bidi:isolate;margin-inline-start:auto;background:var(--bg);border:1px solid var(--line);border-radius:5px;padding:1px 7px}
+.ch-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:7px}
+.ch-card{display:flex;align-items:flex-start;gap:10px;background:var(--surf);border:1px solid var(--line);border-radius:var(--r-sm);padding:12px 14px;transition:var(--tr);box-shadow:var(--sh-sm)}
+.ch-card:hover{box-shadow:var(--sh-md);transform:translateY(-2px);border-color:var(--line2)}
+.ch-card:hover .ch-num{color:var(--ccolor,var(--acc));background:var(--cbg,var(--acc-l))}
+.ch-num{font-family:"JetBrains Mono",monospace;font-size:.63rem;font-weight:700;background:var(--bg);border:1px solid var(--line);border-radius:5px;padding:3px 6px;color:var(--ink2);flex-shrink:0;margin-top:1px;direction:ltr;unicode-bidi:isolate;min-width:30px;text-align:center;transition:var(--tr)}
+.ch-body{min-width:0}
+.ch-name{font-size:.85rem;font-weight:600;color:var(--ink);line-height:1.35;text-align:start}
+.ch-tag{display:inline-block;margin-top:4px;font-size:.67rem;color:var(--quiet);background:var(--bg);border:1px solid var(--line);border-radius:4px;padding:1px 6px}
+.ch-card.hidden,.hub-card.hidden,.tool-card.hidden{display:none!important}
+.ch-group.hidden{display:none!important}
+
+/* ── Empty state ────────────────────────────────────────────── */
+.empty{display:none;text-align:center;padding:72px 20px;color:var(--ink2)}
+.empty.show{display:block}
+.empty-icon{font-size:40px;margin-bottom:12px}
+.empty-title{font-size:1.1rem;font-weight:700;margin-bottom:6px}
+.empty-sub{font-size:.86rem;color:var(--quiet)}
+
+/* ── Divider ────────────────────────────────────────────────── */
+.divider{border:none;border-top:1px solid var(--line);margin:52px 0 0}
+
+/* ── Footer ─────────────────────────────────────────────────── */
+footer{margin-top:80px;padding:36px 24px;border-top:1px solid var(--line);background:var(--surf)}
+.footer-inner{max-width:1180px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.footer-brand{font-weight:700;font-size:.86rem;color:var(--ink)}
+.footer-meta{font-family:"JetBrains Mono",monospace;font-size:.72rem;color:var(--quiet);direction:ltr;unicode-bidi:isolate}
+.footer-cta{background:var(--acc);color:#fff;padding:9px 18px;border-radius:8px;font-weight:700;font-size:.82rem;transition:var(--tr)}
+.footer-cta:hover{background:var(--acc-d)}
+
+/* ── Scroll reveal ──────────────────────────────────────────── */
+.rv{opacity:0;transform:translateY(16px);transition:.5s cubic-bezier(.25,.8,.25,1)}
+.rv.in{opacity:1;transform:none}
+
+/* ── Responsive ─────────────────────────────────────────────── */
+@media(max-width:600px){.hub-grid,.tool-grid,.ch-grid{grid-template-columns:1fr}.hero h1{font-size:1.9rem}.filter-title{font-size:1.15rem}}
+</style>
+<link rel="stylesheet" href="site-qa-2026.css">
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="nav-inner">
+    <a class="brand" href="#">אוטוטק <span class="brand-badge">2026</span></a>
+    <ul class="nav-links">
+      <li><a href="#hubs">מרכזי למידה</a></li>
+      <li><a href="#tools">כלים</a></li>
+      <li><a href="#chapters">פרקים</a></li>
+      <li><a href="deepseek_html_20260607_176157.html">מבחן סיום →</a></li>
+    </ul>
+    <div class="nav-search-wrap">
+      <span style="font-size:13px;color:var(--quiet)">🔍</span>
+      <input id="navq" type="search" placeholder="חיפוש מהיר...">
+    </div>
+  </div>
+</nav>
+
+<div class="page">
+
+<!-- HERO -->
+<section class="hero rv">
+  <div>
+    <div class="hero-eyebrow">מסלול הכשרה מקצועי</div>
+    <h1>תצא מוסמך<br><strong>מנהל מוסך</strong><br>בפחות מ-6 חודשים</h1>
+    <p class="hero-sub">מיסודות חשמל ועד נהיגה אוטונומית — הכל כאן, בסדר הנכון. בחר פרק ותתחיל עכשיו.</p>
+
+    <div class="trust-pills">
+      <div class="trust-pill"><span class="trust-pill-num" id="tc-ch">—</span> פרקים</div>
+      <div class="trust-pill"><span class="trust-pill-num" id="tc-tl">—</span> כלים מעשיים</div>
+      <div class="trust-pill"><span class="trust-pill-num">11</span> תחומי ידע</div>
+      <div class="trust-pill"><span class="trust-pill-num">100</span> שאלות מבחן</div>
+    </div>
+
+    <div class="hero-btns">
+      <a class="btn btn-primary" href="#chapters">פתח את הפרק הראשון →</a>
+      <a class="btn btn-ghost" href="deepseek_html_20260607_176157.html">מבחן סיום 🏆</a>
+    </div>
+  </div>
+
+  <!-- Sidebar card — learning path (onboarding: "make the path visible") -->
+  <div class="hero-card rv" style="transition-delay:.12s">
+    <div class="hc-title">מסלול הלמידה</div>
+    <div class="hc-path">
+      <div class="hc-step"><div class="hc-dot" style="background:var(--c-blue)"></div>יסודות הקורס<span class="hc-step-count" id="cnt-found">—</span></div>
+      <div class="hc-step"><div class="hc-dot" style="background:var(--c-slate)"></div>מוסך וקריירה<span class="hc-step-count" id="cnt-garage">—</span></div>
+      <div class="hc-step"><div class="hc-dot" style="background:var(--c-lime)"></div>אבחון ומעבדות<span class="hc-step-count" id="cnt-diag">—</span></div>
+      <div class="hc-step"><div class="hc-dot" style="background:var(--c-red)"></div>מנוע ודלק<span class="hc-step-count" id="cnt-engine">—</span></div>
+      <div class="hc-step"><div class="hc-dot" style="background:var(--c-gold)"></div>חשמל ואלקטרוניקה<span class="hc-step-count" id="cnt-elec">—</span></div>
+      <div class="hc-step"><div class="hc-dot" style="background:var(--c-plum)"></div>שלדה ובלמים<span class="hc-step-count" id="cnt-chassis">—</span></div>
+      <div class="hc-step"><div class="hc-dot" style="background:var(--c-teal)"></div>רכב חשמלי EV<span class="hc-step-count" id="cnt-ev">—</span></div>
+      <div class="hc-step"><div class="hc-dot" style="background:var(--c-clay)"></div>תיבות הילוכים<span class="hc-step-count" id="cnt-gear">—</span></div>
+      <div class="hc-step"><div class="hc-dot" style="background:var(--c-plum)"></div>ADAS ואוטונומי<span class="hc-step-count" id="cnt-adas">—</span></div>
+    </div>
+    <div class="hc-divider"></div>
+    <div class="hc-total"><span class="hc-total-label">סה"כ בפלטפורמה</span><span class="hc-total-val" id="sc-total">—</span></div>
+  </div>
+</section>
+
+<!-- LEARNING JOURNEY — onboarding: progress creates motivation -->
+<div class="journey rv">
+  <div class="journey-title">מסלול הלמידה שלך</div>
+  <div class="journey-steps" id="journey-steps">
+    <div class="j-step">
+      <div class="j-node" onclick="filterBy('found')">
+        <div class="j-circle" style="background:var(--c-blue-l);border-color:var(--c-blue)">📚</div>
+        <div class="j-label" style="color:var(--c-blue)">יסודות</div>
+      </div>
+    </div>
+    <div class="j-step"><div class="j-arrow">‹</div></div>
+    <div class="j-step">
+      <div class="j-node" onclick="filterBy('garage')">
+        <div class="j-circle" style="background:var(--c-slate-l);border-color:var(--c-slate)">🏢</div>
+        <div class="j-label" style="color:var(--c-slate)">מוסך</div>
+      </div>
+    </div>
+    <div class="j-step"><div class="j-arrow">‹</div></div>
+    <div class="j-step">
+      <div class="j-node" onclick="filterBy('diag')">
+        <div class="j-circle" style="background:var(--c-lime-l);border-color:var(--c-lime)">🔬</div>
+        <div class="j-label" style="color:var(--c-lime)">אבחון</div>
+      </div>
+    </div>
+    <div class="j-step"><div class="j-arrow">‹</div></div>
+    <div class="j-step">
+      <div class="j-node" onclick="filterBy('engine')">
+        <div class="j-circle" style="background:var(--c-red-l);border-color:var(--c-red)">⚙️</div>
+        <div class="j-label" style="color:var(--c-red)">מנוע</div>
+      </div>
+    </div>
+    <div class="j-step"><div class="j-arrow">‹</div></div>
+    <div class="j-step">
+      <div class="j-node" onclick="filterBy('ev')">
+        <div class="j-circle" style="background:var(--c-teal-l);border-color:var(--c-teal)">🔋</div>
+        <div class="j-label" style="color:var(--c-teal)">EV</div>
+      </div>
+    </div>
+    <div class="j-step"><div class="j-arrow">‹</div></div>
+    <div class="j-step">
+      <div class="j-node" onclick="filterBy('adas')">
+        <div class="j-circle" style="background:var(--c-plum-l);border-color:var(--c-plum)">🛡️</div>
+        <div class="j-label" style="color:var(--c-plum)">ADAS</div>
+      </div>
+    </div>
+    <div class="j-step"><div class="j-arrow">‹</div></div>
+    <div class="j-step">
+      <div class="j-node" onclick="location.href='deepseek_html_20260607_176157.html'">
+        <div class="j-circle" style="background:#FFFBEB;border-color:var(--acc)">🏆</div>
+        <div class="j-label" style="color:var(--acc)">מבחן</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- HUBS -->
+<hr class="divider">
+<section class="sec rv" id="hubs">
+  <div class="sec-head">
+    <span class="sec-num">01</span>
+    <span class="sec-title">מרכזי למידה</span>
+    <span class="sec-count" id="hub-count">5</span>
+  </div>
+  <div class="hub-grid">
+    <a class="hub-card rv" href="deepseek_html_20260607_44b790.html" data-cat="hub" data-kw="מרכז למידה אוטוטק קורס" style="--c:var(--c-blue)">
+      <div class="hub-icon" style="background:var(--c-blue-l)">🎓</div>
+      <div class="hub-name">מרכז הלמידה</div>
+      <div class="hub-desc">פלטפורמת הלמידה לקורס אוטוטק — כל הפרקים בממשק אחד מסודר</div>
+      <div class="hub-cta">פתח ←</div>
+    </a>
+    <a class="hub-card rv" href="deepseek_html_20260607_416c58.html" data-cat="hub" data-kw="מרכז למידה אינטראקטיבי גלוסרי" style="--c:var(--c-clay)">
+      <div class="hub-icon" style="background:var(--c-clay-l)">⚡</div>
+      <div class="hub-name">מרכז אינטראקטיבי</div>
+      <div class="hub-desc">גלוסרי חי, אקורדיון תקלות, מפת קורס ויזואלית</div>
+      <div class="hub-cta">פתח ←</div>
+    </a>
+    <a class="hub-card rv" href="deepseek_html_20260607_68c146.html" data-cat="hub" data-kw="פלטפורמה מקצועית" style="--c:var(--c-blue)">
+      <div class="hub-icon" style="background:var(--c-blue-l)">🚀</div>
+      <div class="hub-name">פלטפורמה מקצועית</div>
+      <div class="hub-desc">גרסת הקורס המלאה עם ניווט מקצועי ומתקדם</div>
+      <div class="hub-cta">פתח ←</div>
+    </a>
+    <a class="hub-card rv" href="deepseek_html_20260607_6205fa.html" data-cat="hub" data-kw="מפת דרכים מסלול ויזואלי" style="--c:var(--c-teal)">
+      <div class="hub-icon" style="background:var(--c-teal-l)">🗺️</div>
+      <div class="hub-name">מפת הדרכים</div>
+      <div class="hub-desc">המסלול כולו בצורה ויזואלית — ראה לאן אתה הולך לפני שמתחילים</div>
+      <div class="hub-cta">פתח ←</div>
+    </a>
+    <a class="hub-card rv" href="deepseek_html_20260607_31e397.html" data-cat="hub" data-kw="אינדקס קורס מלא" style="--c:var(--c-lime)">
+      <div class="hub-icon" style="background:var(--c-lime-l)">📋</div>
+      <div class="hub-name">אינדקס הקורס המלא</div>
+      <div class="hub-desc">כל הפרקים בדף אחד, מסודרים לפי סדר הלמידה</div>
+      <div class="hub-cta">פתח ←</div>
+    </a>
+  </div>
+</section>
+
+<!-- TOOLS -->
+<section class="sec rv" id="tools">
+  <div class="sec-head">
+    <span class="sec-num">02</span>
+    <span class="sec-title">כלים ואנציקלופדיות</span>
+    <span class="sec-count" id="tool-count">7</span>
+  </div>
+  <div class="tool-grid">
+    <a class="tool-card rv" href="car-logos.html" data-cat="tool" data-kw="סמלי רכבים לוגואים גלריה מבחן">
+      <div class="tool-icon" style="background:#FEFCE8">🏎️</div>
+      <div><div class="tool-name">גלריית סמלי הרכבים</div><div class="tool-desc">כל יצרני הרכב + מבחן זיהוי</div></div>
+    </a>
+    <a class="tool-card rv" href="idf-vehicles.html" data-cat="tool" data-kw="רכבי ביטחון צהל צבאי">
+      <div class="tool-icon" style="background:var(--c-sage-l)">🪖</div>
+      <div><div class="tool-name">רכבי ביטחון וצה"ל</div><div class="tool-desc">מדריך מפורט לרכבים צבאיים</div></div>
+    </a>
+    <a class="tool-card rv" href="deepseek_html_20260607_b09bc7.html" data-cat="tool" data-kw="קטלוג סמלי רכב לוגואים">
+      <div class="tool-icon" style="background:var(--c-teal-l)">📖</div>
+      <div><div class="tool-name">קטלוג סמלי הרכב</div><div class="tool-desc">אנציקלופדיה ויזואלית של לוגואים</div></div>
+    </a>
+    <a class="tool-card rv" href="deepseek_html_20260607_677099.html" data-cat="tool" data-kw="אנציקלופדיה רכב ישראלית שוק">
+      <div class="tool-icon" style="background:var(--c-blue-l)">🇮🇱</div>
+      <div><div class="tool-name">אנציקלופדיית רכב ישראלית</div><div class="tool-desc">שוק הרכב בישראל — מידע מקיף</div></div>
+    </a>
+    <a class="tool-card rv" href="deepseek_html_20260607_da711d.html" data-cat="tool" data-kw="אנציקלופדיה רכב מורחבת">
+      <div class="tool-icon" style="background:var(--c-plum-l)">📚</div>
+      <div><div class="tool-name">אנציקלופדיית רכב II</div><div class="tool-desc">גרסה מורחבת ומפורטת</div></div>
+    </a>
+    <a class="tool-card rv" href="deepseek_html_20260607_df5a82.html" data-cat="tool" data-kw="בודק מספרי רכב תקינות">
+      <div class="tool-icon" style="background:var(--c-red-l)">🔢</div>
+      <div><div class="tool-name">בודק מספרי רכב</div><div class="tool-desc">בדיקת תקינות מספר רכב ישראלי</div></div>
+    </a>
+    <a class="tool-card rv" href="deepseek_html_20260607_e42244.html" data-cat="tool" data-kw="בודק תקינות מספר רכב מתקדם">
+      <div class="tool-icon" style="background:var(--c-lime-l)">✅</div>
+      <div><div class="tool-name">בודק תקינות מתקדם</div><div class="tool-desc">אימות מורחב של מספר רכב</div></div>
+    </a>
+  </div>
+</section>
+
+<!-- CHAPTERS FILTER -->
+<div class="filter-wrap" id="chapters">
+  <div class="filter-top rv">
+    <h2 class="filter-title">כל הפרקים</h2>
+    <span class="filter-count" id="tally"></span>
+  </div>
+  <div class="search-box rv">
+    <span class="search-icon">🔍</span>
+    <input id="sq" type="search" placeholder="חפש לפי נושא: ABS, DSG, EV, ECU, דיזל...">
+  </div>
+  <div class="chip-bar rv" id="chip-bar">
+    <button class="chip on" data-f="all" style="background:var(--acc)">הכל</button>
+    <button class="chip" data-f="found"   style="--on:var(--c-blue)">📚 יסודות</button>
+    <button class="chip" data-f="garage"  style="--on:var(--c-slate)">🏢 מוסך</button>
+    <button class="chip" data-f="diag"    style="--on:var(--c-lime)">🔬 אבחון</button>
+    <button class="chip" data-f="engine"  style="--on:var(--c-red)">⚙️ מנוע</button>
+    <button class="chip" data-f="elec"    style="--on:var(--c-gold)">⚡ חשמל</button>
+    <button class="chip" data-f="chassis" style="--on:var(--c-plum)">🔩 שלדה</button>
+    <button class="chip" data-f="ev"      style="--on:var(--c-teal)">🔋 EV</button>
+    <button class="chip" data-f="gear"    style="--on:var(--c-clay)">🔄 גיר</button>
+    <button class="chip" data-f="adas"    style="--on:var(--c-plum)">🛡️ ADAS</button>
+    <button class="chip" data-f="media"   style="--on:var(--c-blue)">🎵 מולטימדיה</button>
+    <button class="chip" data-f="mil"     style="--on:var(--c-sage)">🎖️ צבאי</button>
+    <button class="chip" data-f="exam"    style="--on:var(--acc)">🏆 מבחן</button>
+  </div>
+</div>
+
+<!-- CHAPTER GROUPS -->
+<div class="ch-group rv" data-sec="found">
+  <div class="ch-group-head">
+    <div class="ch-group-color" style="background:var(--c-blue)"></div>
+    <span class="ch-group-title" style="color:var(--c-blue)">יסודות הקורס</span>
+    <span class="ch-group-range">פ׳ 2–11</span>
+  </div>
+  <div class="ch-grid">
+    <a class="ch-card" href="deepseek_html_20260607_5ec9c3.html" data-f="found" data-kw="מערכות הרכב יסודות" style="--ccolor:var(--c-blue);--cbg:var(--c-blue-l)"><div class="ch-num">02</div><div class="ch-body"><div class="ch-name">מערכות הרכב</div><div class="ch-tag">יסודות</div></div></a>
+    <a class="ch-card" href="deepseek_html_20260607_29d6ac.html" data-f="found" data-kw="מערכות רכב גיימיפיקציה" style="--ccolor:var(--c-blue);--cbg:var(--c-blue-l)"><div class="ch-num">02🎮</div><div class="ch-body"><div class="ch-name">מערכות הרכב — משחקים</div><div class="ch-tag">גיימיפיקציה</div></div></a>
+    <a class="ch-card" href="deepseek_html_20260607_9b0ec2.html" data-f="found" data-kw="מילון מונחים גיימיפיקציה" style="--ccolor:var(--c-blue);--cbg:var(--c-blue-l)"><div class="ch-num">03🎮</div><div class="ch-body"><div class="ch-name">מילון מונחים — משחקים</div><div class="ch-tag">גיימיפיקציה</div></div></a>
+    <a class="ch-card" href="deepseek_html_20260607_48e604.html" data-f="found" data-kw="רכבים ישראל שוק" style="--ccolor:var(--c-blue);--cbg:var(--c-blue-l)"><div class="ch-num">04</div><div class="ch-body"><div class="ch-name">רכבים בישראל</div><div class="ch-tag">שוק מקומי</div></div></a>
+    <a class="ch-card" href="deepseek_html_20260607_d56776.html" data-f="found" data-kw="תקלות נפוצות" style="--ccolor:var(--c-blue);--cbg:var(--c-blue-l)"><div class="ch-num">05</div><div class="ch-body"><div class="ch-name">תקלות נפוצות</div><div class="ch-tag">אבחון</div></div></a>
+    <a class="ch-card" href="deepseek_html_20260607_9c0487.html" data-f="found" data-kw="סורקים כלי אבחון OBD" style="--ccolor:var(--c-blue);--cbg:var(--c-blue-l)"><div class="ch-num">06</div><div class="ch-body"><div class="ch-name">סורקים וכלי אבחון</div><div class="ch-tag">ציוד</div></div></a>
+    <a class="ch-card" href="deepseek_html_20260607_1cf0ad.html" data-f="found" data-kw="מפת הקורס הסמכה" style="--ccolor:var(--c-blue);--cbg:var(--c-blue-l)"><div class="ch-num">07</div><div class="ch-body"><div class="ch-name">מפת הקורס</div><div class="ch-tag">סיכום</div></div></a>
+    <a class="ch-card" href="deepseek_html_20260607_f87e18.html" data-f="found" data-kw="סימולטור אבחון מתקדם" style="--ccolor:var(--c-blue);--cbg:var(--c-blue-l)"><div class="ch-num">08</div><div class="ch-body"><div class="ch-name">סימולטור אבחון מתקדם</div><div class="ch-tag">סימולציה</div></div></a>
+    <a class="ch-card" href="deepseek_html_20260607_c11815.html" data-f="found" data-kw="מעבדת חשמל חיה" style="--ccolor:var(--c-blue);--cbg:var(--c-blue-l)"><div class="ch-num">09</div><div class="ch-body"><div class="ch-name">מעבדת חשמל חיה</div><div class="ch-tag">מעבדה</div></div></a>
+    <a class="ch-card" href="deepseek_html_20260607_2f27c7.html" data-f="found" data-kw="חדר מיון תקלות" style="--ccolor:var(--c-blue);--cbg:var(--c-blue-l)"><div class="ch-num">10</div><div class="ch-body"><div class="ch-name">חדר מיון תקלות</div><div class="ch-tag">אבחון</div></div></a>
+    <a class="ch-card" href="deepseek_html_20260607_b52c3e.html" data-f="found" data-kw="האקתון אבחון תחרות" style="--ccolor:var(--c-blue);--cbg:var(--c-blue-l)"><div class="ch-num">11</div><div class="ch-body"><div class="ch-name">האקתון אבחון</div><div class="ch-tag">תחרות</div></div></a>
+  </div>
+</div>
+
+<div class="ch-group rv" data-sec="garage">
+  <div class="ch-group-head"><div class="ch-group-color" style="background:var(--c-slate)"></div><span class="ch-group-title" style="color:var(--c-slate)">מוסך, מקצוע וקריירה</span><span class="ch-group-range">פ׳ 12–21, 30–31, 58–59</span></div>
+  <div class="ch-grid">
+    <a class="ch-card" href="deepseek_html_20260607_ea3104.html" data-f="garage" data-kw="שיחת טלפון לקוח שירות" style="--ccolor:var(--c-slate);--cbg:var(--c-slate-l)"><div class="ch-num">12</div><div class="ch-body"><div class="ch-name">שיחת טלפון עם לקוח</div><div class="ch-tag">שירות</div></div></a>
+    <a class="ch-card" href="deepseek_html_20260607_ec76ac.html" data-f="garage" data-kw="מנהל מוסך ניהול" style="--ccolor:var(--c-slate);--cbg:var(--c-slate-l)"><div class="ch-num">13</div><div class="ch-body"><div class="ch-name">מנהל מוסך</div><div class="ch-tag">ניהול</div></div></a>
+    <a class="ch-card" href="deepseek_html_20260607_c9ee51.html" data-f="garage" data-kw="פענוח קודים DTC" style="--ccolor:var(--c-slate);--cbg:var(--c-slate-l)"><div class="ch-num">14</div><div class="ch-body"><div class="ch-name">פענוח קודים DTC</div><div class="ch-tag">DTC</div></div></a>
+    <a class="ch-card" href="deepseek_html_20260607_0d81b4.html" data-f="garage" data-kw="מכרז חלפים חלקים" style="--ccolor:var(--c-slate);--cbg:var(--c-slate-l)"><div class="ch-num">15</div><div class="ch-body"><div class="ch-name">מכרז חלפים</div><div class="ch-tag">עסקי</div></div></a>
+    <a class="ch-card" href="deepseek_html_20260607_937a53.html" data-f="garage" data-kw="תעודת זהות רכב רישוי" style="--ccolor:var(--c-slate);--cbg:var(--c-slate-l)"><div class="ch-num">16</div><div class="ch-body"><div class="ch-name">תעודת זהות לרכב</div><div class="ch-tag">רישוי</div></div></a>
+    <a class="ch-card" href="deepseek_html_20260607_dc6608.html" data-f="garage" data-kw="כיול ADAS" style="--ccolor:var(--c-slate);--cbg:var(--c-slate-l)"><div class="ch-num">17</div><div class="ch-body"><div class="ch-name">כיול ADAS</div><div class="ch-tag">טכנולוגיה</div></div></a>
+    <a class="ch-card" href="deepseek_html_20260607_c93159.html" data-f="garage" data-kw="CAN Bus מעבדה" style="--ccolor:var(--c-slate);--cbg:var(--c-slate-l)"><div class="ch-num">18</div><div class="ch-body"><div class="ch-name">מעבדת CAN Bus</div><div class="ch-tag">מעבדה</div></div></a>
+    <a class="ch-card" href="deepseek_html_20260607_407842.html" data-f="garage" data-kw="ספר תקלות ישראלי" style="--ccolor:var(--c-slate);--cbg:var(--c-slate-l)"><div class="ch-num">19</div><div class="ch-body"><div class="ch-name">ספר תקלות ישראלי</div><div class="ch-tag">מאגר</div></div></a>
+    <a class="ch-card" href="deepseek_html_20260607_69797b.html" data-f="garage" data-kw="הסמכה חיצונית בחינה" style="--ccolor:var(--c-slate);--cbg:var(--c-slate-l)"><div class="ch-num">20</div><div class="ch-body"><div class="ch-name">הסמכה חיצונית</div><div class="ch-tag">הסמכה</div></div></a>
+    <a class="ch-card" href="deepseek_html_20260607_2c0008.html" data-f="garage" data-kw="אנטומיה רכב מבנה" style="--ccolor:var(--c-slate);--cbg:var(--c-slate-l)"><div class="ch-num">21</div><div class="ch-body"><div class="ch-name">אנטומיה של רכב</div><div class="ch-tag">יסודות</div></div></a>
+    <a class="ch-card" href="deepseek_html_20260607_10811f.html" data-f="garage" data-kw="אטל אחזקה לוגיסטיקה" style="--ccolor:var(--c-slate);--cbg:var(--c-slate-l)"><div class="ch-num">30</div><div class="ch-body"><div class="ch-name">אט"ל</div><div class="ch-tag">אחזקה</div></div></a>
+    <a class="ch-card" href="deepseek_html_20260607_37674b.html" data-f="garage" data-kw="מסלול קריירה עתיד" style="--ccolor:var(--c-slate);--cbg:var(--c-slate-l)"><div class="ch-num">31</div><div class="ch-body"><div class="ch-name">מסלול קריירה</div><div class="ch-tag">קריירה</div></div></a>
+    <a class="ch-card" href="deepseek_html_20260607_34ed0c.html" data-f="garage" data-kw="ניהול צי רכב fleet" style="--ccolor:var(--c-slate);--cbg:var(--c-slate-l)"><div class="ch-num">58</div><div class="ch-body"><div class="ch-name">ניהול צי רכב</div><div class="ch-tag">Fleet</div></div></a>
+    <a class="ch-card" href="deepseek_html_20260607_fbd661.html" data-f="garage" data-kw="בטיחות עבודה מוסך" style="--ccolor:var(--c-slate);--cbg:var(--c-slate-l)"><div class="ch-num">59</div><div class="ch-body"><div class="ch-name">בטיחות בעבודה במוסך</div><div class="ch-tag">בטיחות</div></div></a>
+  </div>
+</div>
+
+<div class="ch-group rv" data-sec="diag">
+  <div class="ch-group-head"><div class="ch-group-color" style="background:var(--c-lime)"></div><span class="ch-group-title" style="color:var(--c-lime)">אבחון, מעבדות וסימולטורים</span><span class="ch-group-range">פ׳ 22–24, 26, 57, 62–64, 78</span></div>
+  <div class="ch-grid">
+    <a class="ch-card" href="deepseek_html_20260607_4b0405.html" data-f="diag" data-kw="ספר תקלות אינטראקטיבי" style="--ccolor:var(--c-lime);--cbg:var(--c-lime-l)"><div class="ch-num">22</div><div class="ch-body"><div class="ch-name">ספר תקלות אינטראקטיבי</div><div class="ch-tag">אינטראקטיבי</div></div></a>
+    <a class="ch-card" href="deepseek_html_20260607_60d8f1.html" data-f="diag" data-kw="סימולטור מולטימטר מדידה" style="--ccolor:var(--c-lime);--cbg:var(--c-lime-l)"><div class="ch-num">23</div><div class="ch-body"><div class="ch-name">סימולטור מולטימטר</div><div class="ch-tag">סימולציה</div></div></a>
+    <a class="ch-card" href="deepseek_html_20260607_520f14.html" data-f="diag" data-kw="מעבדת אוסילוסקופ אותות" style="--ccolor:var(--c-lime);--cbg:var(--c-lime-l)"><div class="ch-num">24</div><div class="ch-body"><div class="ch-name">מעבדת אוסילוסקופ</div><div class="ch-tag">מעבדה</div></div></a>
+    <a class="ch-card" href="deepseek_html_20260607_4615d8.html" data-f="diag" data-kw="סימולטור אבחון חכם AI" style="--ccolor:var(--c-lime);--cbg:var(--c-lime-l)"><div class="ch-num">26</div><div class="ch-body"><div class="ch-name">סימולטור אבחון חכם</div><div class="ch-tag">AI</div></div></a>
+    <a class="ch-card" href="deepseek_html_20260607_4b23c6.html" data-f="diag" data-kw="דיאגנוסטיקה OBD" style="--ccolor:var(--c-lime);--cbg:var(--c-lime-l)"><div class="ch-num">57</div><div class="ch-body"><div class="ch-name">דיאגנוסטיקה מתקדמת</div><div class="ch-tag">OBD</div></div></a>
+    <a class="ch-card" href="deepseek_html_20260607_b4e447.html" data-f="diag" data-kw="מערכת דיאגנוסטיקה" style="--ccolor:var(--c-lime);--cbg:var(--c-lime-l)"><div class="ch-num">62</div><div class="ch-body"><div class="ch-name">מערכת דיאגנוסטיקה</div><div class="ch-tag">אבחון</div></div></a>
+    <a class="ch-card" href="deepseek_html_20260607_e9ba18.html" data-f="diag" data-kw="אבחון רעשים ברכב" style="--ccolor:var(--c-lime);--cbg:var(--c-lime-l)"><div class="ch-num">63</div><div class="ch-body"><div class="ch-name">אבחון רעשים ברכב</div><div class="ch-tag">אבחון</div></div></a>
+    <a class="ch-card" href="deepseek_html_20260607_c2c5a7.html" data-f="diag" data-kw="שרטוטי חיווט wiring" style="--ccolor:var(--c-lime);--cbg:var(--c-lime-l)"><div class="ch-num">64</div><div class="ch-body"><div class="ch-name">קריאת שרטוטי חיווט</div><div class="ch-tag">Wiring</div></div></a>
+    <a class="ch-card" href="deepseek_html_20260607_2b85d9.html" data-f="diag" data-kw="דיאגנוסטיקה J2534" style="--ccolor:var(--c-lime);--cbg:var(--c-lime-l)"><div class="ch-num">78</div><div class="ch-body"><div class="ch-name">דיאגנוסטיקה J2534</div><div class="ch-tag">פרוטוקול</div></div></a>
+  </div>
+</div>
+
+<div class="ch-group rv" data-sec="engine">
+  <div class="ch-group-head"><div class="ch-group-color" style="background:var(--c-red)"></div><span class="ch-group-title" style="color:var(--c-red)">מנוע, דלק ופליטה</span><span class="ch-group-range">פ׳ 32–35, 49, 61, 67, 76–77</span></div>
+  <div class="ch-grid">
+    <a class="ch-card" href="deepseek_html_20260607_03b401.html" data-f="engine" data-kw="בקרת מנוע ECU" style="--ccolor:var(--c-red);--cbg:var(--c-red-l)"><div class="ch-num">32</div><div class="ch-body"><div class="ch-name">בקרת מנוע</div><div class="ch-tag">ECU</div></div></a>
+    <a class="ch-card" href="deepseek_html_20260607_d5a1c8.html" data-f="engine" data-kw="הזרקת דלק injection" style="--ccolor:var(--c-red);--cbg:var(--c-red-l)"><div class="ch-num">33</div><div class="ch-body"><div class="ch-name">הזרקת דלק</div><div class="ch-tag">Injection</div></div></a>
+    <a class="ch-card" href="deepseek_html_20260607_544735.html" data-f="engine" data-kw="הצתה ignition spark" style="--ccolor:var(--c-red);--cbg:var(--c-red-l)"><div class="ch-num">34</div><div class="ch-body"><div class="ch-name">מערכת הצתה</div><div class="ch-tag">Ignition</div></div></a>
+    <a class="ch-card" href="deepseek_html_20260607_9ec25c.html" data-f="engine" data-kw="פליטה exhaust" style="--ccolor:var(--c-red);--cbg:var(--c-red-l)"><div class="ch-num">35</div><div class="ch-body"><div class="ch-name">מערכת פליטה</div><div class="ch-tag">Exhaust</div></div></a>
+    <a class="ch-card" href="deepseek_html_20260607_115eb2.html" data-f="engine" data-kw="דלק דיזל diesel" style="--ccolor:var(--c-red);--cbg:var(--c-red-l)"><div class="ch-num">49</div><div class="ch-body"><div class="ch-name">דלק דיזל</div><div class="ch-tag">Diesel</div></div></a>
+    <a class="ch-card" href="deepseek_html_20260607_559a28.html" data-f="engine" data-kw="ניהול מנוע ECM" style="--ccolor:var(--c-red);--cbg:var(--c-red-l)"><div class="ch-num">61</div><div class="ch-body"><div class="ch-name">ניהול מנוע מתקדם</div><div class="ch-tag">ECM</div></div></a>
+    <a class="ch-card" href="deepseek_html_20260607_6ceb08.html" data-f="engine" data-kw="פליטה אקטיבית active" style="--ccolor:var(--c-red);--cbg:var(--c-red-l)"><div class="ch-num">67</div><div class="ch-body"><div class="ch-name">פליטה אקטיבית</div><div class="ch-tag">Active</div></div></a>
+    <a class="ch-card" href="deepseek_html_20260607_cfc775.html" data-f="engine" data-kw="הזרקת מים מתנול" style="--ccolor:var(--c-red);--cbg:var(--c-red-l)"><div class="ch-num">76</div><div class="ch-body"><div class="ch-name">הזרקת מים / מתנול</div><div class="ch-tag">Methanol</div></div></a>
+    <a class="ch-card" href="deepseek_html_20260607_e236db.html" data-f="engine" data-kw="ניהול מנוע מפות tuning" style="--ccolor:var(--c-red);--cbg:var(--c-red-l)"><div class="ch-num">77</div><div class="ch-body"><div class="ch-name">ניהול מנוע — מפות</div><div class="ch-tag">Tuning</div></div></a>
+  </div>
+</div>
+
+<div class="ch-group rv" data-sec="elec">
+  <div class="ch-group-head"><div class="ch-group-color" style="background:var(--c-gold)"></div><span class="ch-group-title" style="color:var(--c-gold)">חשמל ואלקטרוניקה</span><span class="ch-group-range">פ׳ 41–44, 60</span></div>
+  <div class="ch-grid">
+    <a class="ch-card" href="deepseek_html_20260607_304cdc.html" data-f="elec" data-kw="טעינה אלטרנטור alternator" style="--ccolor:var(--c-gold);--cbg:var(--c-gold-l)"><div class="ch-num">41</div><div class="ch-body"><div class="ch-name">מערכת טעינה</div><div class="ch-tag">Alternator</div></div></a>
+    <a class="ch-card" href="deepseek_html_20260607_d5ee4d.html" data-f="elec" data-kw="התנעה starter" style="--ccolor:var(--c-gold);--cbg:var(--c-gold-l)"><div class="ch-num">42</div><div class="ch-body"><div class="ch-name">מערכת התנעה</div><div class="ch-tag">Starter</div></div></a>
+    <a class="ch-card" href="deepseek_html_20260607_c61e09.html" data-f="elec" data-kw="תאורה LED lighting" style="--ccolor:var(--c-gold);--cbg:var(--c-gold-l)"><div class="ch-num">43</div><div class="ch-body"><div class="ch-name">מערכת תאורה</div><div class="ch-tag">Lighting</div></div></a>
+    <a class="ch-card" href="deepseek_html_20260607_d6a7b1.html" data-f="elec" data-kw="אנציקלופדיית יצרנים" style="--ccolor:var(--c-gold);--cbg:var(--c-gold-l)"><div class="ch-num">60</div><div class="ch-body"><div class="ch-name">אנציקלופדיית יצרנים</div><div class="ch-tag">יצרנים</div></div></a>
+    <a class="ch-card" href="deepseek_html_20260607_de7f7f.html" data-f="elec" data-kw="מערכות רכב מתקדמות" style="--ccolor:var(--c-gold);--cbg:var(--c-gold-l)"><div class="ch-num">40–44</div><div class="ch-body"><div class="ch-name">מערכות רכב מתקדמות</div><div class="ch-tag">סיכום</div></div></a>
+  </div>
+</div>
+
+<div class="ch-group rv" data-sec="chassis">
+  <div class="ch-group-head"><div class="ch-group-color" style="background:var(--c-plum)"></div><span class="ch-group-title" style="color:var(--c-plum)">שלדה, מתלים ובלמים</span><span class="ch-group-range">פ׳ 36–40, 48, 66, 68</span></div>
+  <div class="ch-grid">
+    <a class="ch-card" href="deepseek_html_20260607_122cf0.html" data-f="chassis" data-kw="מיזוג אוויר AC" style="--ccolor:var(--c-plum);--cbg:var(--c-plum-l)"><div class="ch-num">36</div><div class="ch-body"><div class="ch-name">מיזוג אוויר</div><div class="ch-tag">AC</div></div></a>
+    <a class="ch-card" href="deepseek_html_20260607_ceba98.html" data-f="chassis" data-kw="בלמים ABS brakes" style="--ccolor:var(--c-plum);--cbg:var(--c-plum-l)"><div class="ch-num">37</div><div class="ch-body"><div class="ch-name">מערכת בלמים</div><div class="ch-tag">Brakes</div></div></a>
+    <a class="ch-card" href="deepseek_html_20260607_fcfbf3.html" data-f="chassis" data-kw="מתלים suspension" style="--ccolor:var(--c-plum);--cbg:var(--c-plum-l)"><div class="ch-num">38</div><div class="ch-body"><div class="ch-name">מערכת מתלים</div><div class="ch-tag">Suspension</div></div></a>
+    <a class="ch-card" href="deepseek_html_20260607_f6100a.html" data-f="chassis" data-kw="היגוי steering" style="--ccolor:var(--c-plum);--cbg:var(--c-plum-l)"><div class="ch-num">39</div><div class="ch-body"><div class="ch-name">מערכת היגוי</div><div class="ch-tag">Steering</div></div></a>
+    <a class="ch-card" href="deepseek_html_20260607_970f86.html" data-f="chassis" data-kw="קירור רדיאטור cooling" style="--ccolor:var(--c-plum);--cbg:var(--c-plum-l)"><div class="ch-num">40</div><div class="ch-body"><div class="ch-name">מערכת קירור</div><div class="ch-tag">Cooling</div></div></a>
+    <a class="ch-card" href="deepseek_html_20260607_2bca17.html" data-f="chassis" data-kw="צמיגים חישוקים tires" style="--ccolor:var(--c-plum);--cbg:var(--c-plum-l)"><div class="ch-num">48</div><div class="ch-body"><div class="ch-name">צמיגים וחישוקים</div><div class="ch-tag">Tires</div></div></a>
+    <a class="ch-card" href="deepseek_html_20260607_99effe.html" data-f="chassis" data-kw="מתלי אוויר air susp" style="--ccolor:var(--c-plum);--cbg:var(--c-plum-l)"><div class="ch-num">66</div><div class="ch-body"><div class="ch-name">מתלי אוויר</div><div class="ch-tag">Air Susp.</div></div></a>
+    <a class="ch-card" href="deepseek_html_20260607_bd1ffa.html" data-f="chassis" data-kw="אווירודינמיקה aero" style="--ccolor:var(--c-plum);--cbg:var(--c-plum-l)"><div class="ch-num">68</div><div class="ch-body"><div class="ch-name">אווירודינמיקה אקטיבית</div><div class="ch-tag">Aero</div></div></a>
+  </div>
+</div>
+
+<div class="ch-group rv" data-sec="ev">
+  <div class="ch-group-head"><div class="ch-group-color" style="background:var(--c-teal)"></div><span class="ch-group-title" style="color:var(--c-teal)">רכב חשמלי ומערכות סוללה</span><span class="ch-group-range">פ׳ 25, 50–52, 69, 73–75</span></div>
+  <div class="ch-grid">
+    <a class="ch-card" href="deepseek_html_20260607_1939f4.html" data-f="ev" data-kw="מדריך רכב חשמלי EV" style="--ccolor:var(--c-teal);--cbg:var(--c-teal-l)"><div class="ch-num">25</div><div class="ch-body"><div class="ch-name">מדריך רכב חשמלי</div><div class="ch-tag">EV Guide</div></div></a>
+    <a class="ch-card" href="deepseek_html_20260607_4dac43.html" data-f="ev" data-kw="טעינה EV charging" style="--ccolor:var(--c-teal);--cbg:var(--c-teal-l)"><div class="ch-num">50</div><div class="ch-body"><div class="ch-name">מערכת טעינה EV</div><div class="ch-tag">Charging</div></div></a>
+    <a class="ch-card" href="deepseek_html_20260607_f0256d.html" data-f="ev" data-kw="ניהול סוללה BMS battery" style="--ccolor:var(--c-teal);--cbg:var(--c-teal-l)"><div class="ch-num">51</div><div class="ch-body"><div class="ch-name">ניהול סוללה BMS</div><div class="ch-tag">BMS</div></div></a>
+    <a class="ch-card" href="deepseek_html_20260607_798b8f.html" data-f="ev" data-kw="הנעה חשמלית מנוע motor" style="--ccolor:var(--c-teal);--cbg:var(--c-teal-l)"><div class="ch-num">52</div><div class="ch-body"><div class="ch-name">הנעה חשמלית</div><div class="ch-tag">Motor</div></div></a>
+    <a class="ch-card" href="deepseek_html_20260607_6711f9.html" data-f="ev" data-kw="ניהול תרמי thermal" style="--ccolor:var(--c-teal);--cbg:var(--c-teal-l)"><div class="ch-num">69</div><div class="ch-body"><div class="ch-name">ניהול תרמי</div><div class="ch-tag">Thermal</div></div></a>
+    <a class="ch-card" href="deepseek_html_20260607_4ca928.html" data-f="ev" data-kw="סוללה פירוק תיקון HV" style="--ccolor:var(--c-teal);--cbg:var(--c-teal-l)"><div class="ch-num">73</div><div class="ch-body"><div class="ch-name">סוללה — פירוק ותיקון</div><div class="ch-tag">HV Battery</div></div></a>
+    <a class="ch-card" href="deepseek_html_20260607_8f77fc.html" data-f="ev" data-kw="מימן FCEV fuel cell" style="--ccolor:var(--c-teal);--cbg:var(--c-teal-l)"><div class="ch-num">74</div><div class="ch-body"><div class="ch-name">מערכת מימן FCEV</div><div class="ch-tag">Hydrogen</div></div></a>
+    <a class="ch-card" href="deepseek_html_20260607_a4ca10.html" data-f="ev" data-kw="קירור סוללה battery cooling" style="--ccolor:var(--c-teal);--cbg:var(--c-teal-l)"><div class="ch-num">75</div><div class="ch-body"><div class="ch-name">קירור סוללה</div><div class="ch-tag">Battery Cooling</div></div></a>
+  </div>
+</div>
+
+<div class="ch-group rv" data-sec="gear">
+  <div class="ch-group-head"><div class="ch-group-color" style="background:var(--c-clay)"></div><span class="ch-group-title" style="color:var(--c-clay)">תיבות הילוכים והנעה</span><span class="ch-group-range">פ׳ 27, 53–56</span></div>
+  <div class="ch-grid">
+    <a class="ch-card" href="deepseek_html_20260607_903597.html" data-f="gear" data-kw="סימולטור גיר אוטומטי" style="--ccolor:var(--c-clay);--cbg:var(--c-clay-l)"><div class="ch-num">27</div><div class="ch-body"><div class="ch-name">סימולטור גיר אוטומטי</div><div class="ch-tag">Automatic</div></div></a>
+    <a class="ch-card" href="deepseek_html_20260607_fe8855.html" data-f="gear" data-kw="גיר ידני manual" style="--ccolor:var(--c-clay);--cbg:var(--c-clay-l)"><div class="ch-num">53</div><div class="ch-body"><div class="ch-name">גיר ידני</div><div class="ch-tag">Manual</div></div></a>
+    <a class="ch-card" href="deepseek_html_20260607_5d0007.html" data-f="gear" data-kw="גיר DSG dual clutch" style="--ccolor:var(--c-clay);--cbg:var(--c-clay-l)"><div class="ch-num">54</div><div class="ch-body"><div class="ch-name">גיר DSG</div><div class="ch-tag">DSG</div></div></a>
+    <a class="ch-card" href="deepseek_html_20260607_f85c60.html" data-f="gear" data-kw="גיר CVT variator" style="--ccolor:var(--c-clay);--cbg:var(--c-clay-l)"><div class="ch-num">55</div><div class="ch-body"><div class="ch-name">גיר CVT</div><div class="ch-tag">CVT</div></div></a>
+    <a class="ch-card" href="deepseek_html_20260607_8e3d10.html" data-f="gear" data-kw="הנעה כפולה AWD 4WD" style="--ccolor:var(--c-clay);--cbg:var(--c-clay-l)"><div class="ch-num">56</div><div class="ch-body"><div class="ch-name">הנעה כפולה AWD</div><div class="ch-tag">AWD</div></div></a>
+  </div>
+</div>
+
+<div class="ch-group rv" data-sec="adas">
+  <div class="ch-group-head"><div class="ch-group-color" style="background:var(--c-plum)"></div><span class="ch-group-title" style="color:var(--c-plum)">בטיחות, ADAS ונהיגה אוטונומית</span><span class="ch-group-range">פ׳ 45, 65, 70–72</span></div>
+  <div class="ch-grid">
+    <a class="ch-card" href="deepseek_html_20260607_206bb1.html" data-f="adas" data-kw="בטיחות airbag ABS ESP" style="--ccolor:var(--c-plum);--cbg:var(--c-plum-l)"><div class="ch-num">45</div><div class="ch-body"><div class="ch-name">מערכת בטיחות</div><div class="ch-tag">Safety</div></div></a>
+    <a class="ch-card" href="deepseek_html_20260607_26fc7a.html" data-f="adas" data-kw="ניהול צמיגים TPMS" style="--ccolor:var(--c-plum);--cbg:var(--c-plum-l)"><div class="ch-num">65</div><div class="ch-body"><div class="ch-name">ניהול צמיגים TPMS</div><div class="ch-tag">TPMS</div></div></a>
+    <a class="ch-card" href="deepseek_html_20260607_d40a8d.html" data-f="adas" data-kw="הגנה אקטיבית active safety" style="--ccolor:var(--c-plum);--cbg:var(--c-plum-l)"><div class="ch-num">70</div><div class="ch-body"><div class="ch-name">הגנה אקטיבית</div><div class="ch-tag">Active Safety</div></div></a>
+    <a class="ch-card" href="deepseek_html_20260607_389304.html" data-f="adas" data-kw="נהיגה אוטונומית autonomous" style="--ccolor:var(--c-plum);--cbg:var(--c-plum-l)"><div class="ch-num">71</div><div class="ch-body"><div class="ch-name">נהיגה אוטונומית</div><div class="ch-tag">Autonomous</div></div></a>
+    <a class="ch-card" href="deepseek_html_20260607_834bf2.html" data-f="adas" data-kw="תקשורת V2X vehicle" style="--ccolor:var(--c-plum);--cbg:var(--c-plum-l)"><div class="ch-num">72</div><div class="ch-body"><div class="ch-name">תקשורת V2X</div><div class="ch-tag">V2X</div></div></a>
+  </div>
+</div>
+
+<div class="ch-group rv" data-sec="media">
+  <div class="ch-group-head"><div class="ch-group-color" style="background:var(--c-blue)"></div><span class="ch-group-title" style="color:var(--c-blue)">מולטימדיה ואבטחה</span><span class="ch-group-range">פ׳ 46–47, 79</span></div>
+  <div class="ch-grid">
+    <a class="ch-card" href="deepseek_html_20260607_3ab88a.html" data-f="media" data-kw="מולטימדיה infotainment" style="--ccolor:var(--c-blue);--cbg:var(--c-blue-l)"><div class="ch-num">46</div><div class="ch-body"><div class="ch-name">מערכת מולטימדיה</div><div class="ch-tag">Infotainment</div></div></a>
+    <a class="ch-card" href="deepseek_html_20260607_1c3a90.html" data-f="media" data-kw="נעילה אבטחה alarm" style="--ccolor:var(--c-blue);--cbg:var(--c-blue-l)"><div class="ch-num">47</div><div class="ch-body"><div class="ch-name">נעילה ואבטחה</div><div class="ch-tag">Security</div></div></a>
+    <a class="ch-card" href="deepseek_html_20260607_fa2b6e.html" data-f="media" data-kw="שמע audio speaker" style="--ccolor:var(--c-blue);--cbg:var(--c-blue-l)"><div class="ch-num">79</div><div class="ch-body"><div class="ch-name">מערכת שמע מתקדמת</div><div class="ch-tag">Audio</div></div></a>
+  </div>
+</div>
+
+<div class="ch-group rv" data-sec="mil">
+  <div class="ch-group-head"><div class="ch-group-color" style="background:var(--c-sage)"></div><span class="ch-group-title" style="color:var(--c-sage)">רכבים צבאיים וביטחוניים</span><span class="ch-group-range">פ׳ 28–29</span></div>
+  <div class="ch-grid">
+    <a class="ch-card" href="deepseek_html_20260607_cca263.html" data-f="mil" data-kw="רכבים צבאיים אמריקאים סיניים military" style="--ccolor:var(--c-sage);--cbg:var(--c-sage-l)"><div class="ch-num">28</div><div class="ch-body"><div class="ch-name">רכבים צבאיים עולמיים</div><div class="ch-tag">Military</div></div></a>
+    <a class="ch-card" href="deepseek_html_20260607_e56e45.html" data-f="mil" data-kw="רכבי צהל IDF" style="--ccolor:var(--c-sage);--cbg:var(--c-sage-l)"><div class="ch-num">29</div><div class="ch-body"><div class="ch-name">רכבי צה"ל</div><div class="ch-tag">IDF</div></div></a>
+    <a class="ch-card" href="deepseek_html_20260607_f07289.html" data-f="mil" data-kw="רכבי צהל IDF מלא" style="--ccolor:var(--c-sage);--cbg:var(--c-sage-l)"><div class="ch-num">29+</div><div class="ch-body"><div class="ch-name">רכבי צה"ל — מלא</div><div class="ch-tag">IDF Full</div></div></a>
+  </div>
+</div>
+
+<div class="ch-group rv" data-sec="exam">
+  <div class="ch-group-head"><div class="ch-group-color" style="background:var(--acc)"></div><span class="ch-group-title" style="color:var(--acc)">מבחן סיום</span><span class="ch-group-range">פ׳ 80</span></div>
+  <div class="ch-grid">
+    <a class="ch-card" href="deepseek_html_20260607_176157.html" data-f="exam" data-kw="מבחן סיום 100 שאלות הסמכה exam" style="--ccolor:var(--acc);--cbg:var(--acc-l)">
+      <div class="ch-num">🏆</div>
+      <div class="ch-body">
+        <div class="ch-name">מבחן סיום — <span style="direction:ltr;unicode-bidi:isolate">100</span> שאלות</div>
+        <div class="ch-tag">Final Exam</div>
+      </div>
+    </a>
+  </div>
+</div>
+
+<div class="empty" id="empty">
+  <div class="empty-icon">🔍</div>
+  <div class="empty-title">לא נמצאו תוצאות</div>
+  <div class="empty-sub">נסה מילה אחרת, או לחץ "הכל" כדי לנקות את הסינון</div>
+</div>
+
+</div><!-- /page -->
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">אוטוטק 2026 — מסלול מנהל מוסך</div>
+    <div class="footer-meta" id="ft-meta">— דפים בפלטפורמה</div>
+    <a class="footer-cta" href="deepseek_html_20260607_176157.html">מבחן סיום 🏆</a>
+  </div>
+</footer>
+
+<script>
+(function(){
+  /* counts */
+  const allCh=document.querySelectorAll('.ch-card'),allHub=document.querySelectorAll('.hub-card'),allTool=document.querySelectorAll('.tool-card');
+  const nCh=allCh.length,nTool=allTool.length,nTotal=nCh+allHub.length+nTool;
+  document.getElementById('tc-ch').textContent=nCh;
+  document.getElementById('tc-tl').textContent=nTool;
+  document.getElementById('sc-total').textContent=nTotal;
+  document.getElementById('ft-meta').textContent=nTotal+' דפים בפלטפורמה';
+  const cats=['found','garage','diag','engine','elec','chassis','ev','gear','adas'];
+  cats.forEach(c=>{const el=document.getElementById('cnt-'+c);if(el)el.textContent=document.querySelectorAll(`.ch-card[data-f="${c}"]`).length});
+
+  /* nav scroll */
+  const nav=document.getElementById('nav');
+  window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',window.scrollY>10),{passive:true});
+  /* active nav link */
+  window.addEventListener('scroll',()=>{
+    let cur='';['hubs','tools','chapters'].forEach(id=>{const el=document.getElementById(id);if(el&&window.scrollY>=el.offsetTop-80)cur=id;});
+    document.querySelectorAll('.nav-links a').forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+cur));
+  },{passive:true});
+  /* smooth scroll */
+  document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();const t=document.querySelector(a.getAttribute('href'));if(t)t.scrollIntoView({behavior:'smooth',block:'start'});}));
+
+  /* scroll reveal */
+  const io=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{if(e.isIntersecting){const idx=[...e.target.parentNode.querySelectorAll('.rv:not(.in)')].indexOf(e.target);e.target.style.transitionDelay=Math.min(idx,6)*0.055+'s';e.target.classList.add('in');io.unobserve(e.target);}});
+  },{threshold:0.06,rootMargin:'0px 0px -20px 0px'});
+  document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+
+  /* filter */
+  let activeF='all';
+  const chips=document.querySelectorAll('.chip');
+  chips.forEach(ch=>ch.addEventListener('click',()=>{
+    chips.forEach(c=>{c.classList.remove('on');c.style.background='';c.style.color='';});
+    ch.classList.add('on');ch.style.background=getComputedStyle(ch).getPropertyValue('--on').trim()||'var(--acc)';ch.style.color='#fff';
+    activeF=ch.dataset.f;filter();
+  }));
+
+  window.filterBy=function(f){const ch=document.querySelector(`.chip[data-f="${f}"]`);if(ch)ch.click();document.getElementById('chapters').scrollIntoView({behavior:'smooth',block:'start'});};
+
+  /* search */
+  const navq=document.getElementById('navq'),sq=document.getElementById('sq');
+  navq.addEventListener('input',()=>{sq.value=navq.value;filter();});
+  sq.addEventListener('input',filter);
+
+  function filter(){
+    const q=sq.value.trim().toLowerCase();
+    navq.value=q;
+    let vis=0;
+    document.querySelectorAll('[data-f]').forEach(el=>{
+      const show=(activeF==='all'||el.dataset.f===activeF)&&(!q||(el.dataset.kw||'').toLowerCase().includes(q)||el.textContent.toLowerCase().includes(q));
+      el.classList.toggle('hidden',!show);
+      if(show)vis++;
+    });
+    document.querySelectorAll('.ch-group').forEach(s=>s.classList.toggle('hidden',!s.querySelectorAll('.ch-card:not(.hidden)').length));
+    document.getElementById('empty').classList.toggle('show',vis===0&&document.querySelectorAll('.ch-card:not(.hidden)').length===0);
+    document.getElementById('tally').textContent=q?vis+' תוצאות':nTotal+' דפים';
+  }
+  document.getElementById('tally').textContent=nTotal+' דפים';
+})();
+</script>
+<script src="site-qa-2026.js" defer></script>
+</body>
+</html>

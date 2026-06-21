@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#087c68">
+  <title>מאגר הרכב · AutoBro</title>
+  <link rel="stylesheet" href="vehicle-database.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="back" href="index-whatsapp.html" aria-label="חזרה למסלול">‹</a>
+    <div class="brand"><span>AB</span><div><b>מאגר הרכב</b><small>AutoBro Data</small></div></div>
+    <a class="home" href="index.html" aria-label="דף הבית">⌂</a>
+  </header>
+
+  <main>
+    <section class="intro">
+      <div>
+        <p class="eyebrow">נתונים פתוחים · מקורות מאומתים</p>
+        <h1>חפש יצרן, דגם או הגדרת CAN</h1>
+        <p>אינדקס מהיר שנבנה ממקורות פתוחים, עם קישור למקור בכל רשומה טכנית.</p>
+        <div class="connection" id="connectionStatus"><i></i><span>מתחבר למאגר...</span></div>
+      </div>
+      <div class="stats" aria-label="נתוני המאגר">
+        <span><b id="modelStat">-</b><small>דגמים</small></span>
+        <span><b id="makeStat">-</b><small>יצרנים</small></span>
+        <span><b id="canStat">-</b><small>הגדרות CAN</small></span>
+      </div>
+    </section>
+
+    <section class="workspace" aria-labelledby="searchTitle">
+      <h2 id="searchTitle" class="sr-only">חיפוש במאגר</h2>
+      <label class="search"><span aria-hidden="true">⌕</span><input id="query" type="search" placeholder="לדוגמה: Toyota Corolla, Ford, CAN" autocomplete="off"></label>
+      <div class="tabs" role="tablist" aria-label="סוג נתונים">
+        <button class="tab active" data-tab="models" role="tab" aria-selected="true" type="button">דגמים</button>
+        <button class="tab" data-tab="israel" role="tab" aria-selected="false" type="button">ישראל 2026</button>
+        <button class="tab" data-tab="can" role="tab" aria-selected="false" type="button">CAN</button>
+        <button class="tab" data-tab="sources" role="tab" aria-selected="false" type="button">מקורות</button>
+      </div>
+      <div class="filters" id="modelFilters">
+        <label><span>יצרן</span><select id="makeFilter"><option value="">כל היצרנים</option></select></label>
+        <label><span>שנה</span><select id="yearFilter"><option value="">כל השנים</option></select></label>
+        <button id="clearFilters" type="button">נקה</button>
+      </div>
+      <div class="result-head"><b id="resultTitle">דגמים</b><span id="resultCount">טוען נתונים...</span></div>
+      <div class="pager-bar" id="pagerBar">
+        <span id="rangeLabel">-</span>
+        <div class="pager" aria-label="ניווט בין עמודי תוצאות">
+          <button id="prevPage" type="button" aria-label="עמוד קודם">‹</button>
+          <b id="pageLabel">1 / 1</b>
+          <button id="nextPage" type="button" aria-label="עמוד הבא">›</button>
+        </div>
+        <label class="page-size">לעמוד <select id="pageSize"><option value="40">40</option><option value="100">100</option><option value="250">250</option></select></label>
+      </div>
+      <div class="results" id="results" aria-live="polite"></div>
+      <div class="pager-footer"><button id="prevPageBottom" type="button">עמוד קודם</button><button id="nextPageBottom" type="button">עמוד הבא</button></div>
+    </section>
+
+    <aside class="israel-source">
+      <div><b>מידע רשמי על רכב בישראל</b><p>בדיקה לפי מספר רישוי מתבצעת רק במאגר הממשלתי. האתר אינו שומר מספרי רכב או שלדה.</p></div>
+      <a id="israelLink" href="https://data.gov.il/dataset/private-and-commercial-vehicles" target="_blank" rel="noopener">פתח מקור רשמי ↗</a>
+    </aside>
+  </main>
+
+  <script src="data/vehicle-index.js"></script>
+  <script src="vehicle-database.js"></script>
+</body>
+</html>

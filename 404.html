@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>דף לא נמצא · AutoBro</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,'Segoe UI',sans-serif;background:#eae6df;color:#111b21;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px}
+.phone{width:min(420px,95vw);background:#fff;border-radius:24px;overflow:hidden;box-shadow:0 20px 60px rgba(11,20,26,.18)}
+.top{background:#008069;color:#fff;padding:14px 18px;display:flex;align-items:center;gap:10px}
+.avatar{width:40px;height:40px;border-radius:50%;background:linear-gradient(145deg,#15c26b,#075e54);display:grid;place-items:center;font-weight:900;font-size:16px;color:#fff}
+.top h1{font-size:17px;font-weight:900}
+.top p{font-size:12px;color:rgba(255,255,255,.8);margin-top:2px}
+.chat{background:#efe7dc;padding:18px 14px;display:flex;flex-direction:column;gap:10px;min-height:320px;position:relative}
+.chat::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(17,27,33,.04) 1px,transparent 1.2px);background-size:24px 24px;pointer-events:none}
+.day{align-self:center;background:rgba(255,255,255,.84);color:#54656f;border-radius:8px;font-size:11px;font-weight:700;padding:5px 11px}
+.bubble{max-width:82%;border-radius:7.5px;box-shadow:0 1px .5px rgba(11,20,26,.13);padding:9px 11px;font-size:14px;line-height:1.5;position:relative}
+.bubble.bot{align-self:flex-start;background:#fff;border-start-start-radius:0}
+.bubble.bot::before{content:"";position:absolute;top:0;right:-8px;border-top:8px solid #fff;border-right:8px solid transparent}
+.bubble h2{font-size:18px;margin-bottom:6px;color:#008069}
+.bubble p{color:#3b4a54;margin-top:5px}
+.bubble small{display:block;text-align:left;margin-top:6px;color:#667781;font-size:10.5px}
+.bubble.big{max-width:92%}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.actions a{display:block;text-align:center;padding:10px;border-radius:10px;text-decoration:none;font-weight:900;font-size:13px;transition:.15s}
+.actions a.primary{background:#008069;color:#fff}
+.actions a.secondary{background:#f0f2f5;color:#008069;border:1px solid #d1d7db}
+.actions a:hover{opacity:.88;transform:translateY(-1px)}
+.code-badge{display:inline-block;background:#111b21;color:#d9fdd3;border-radius:8px;padding:4px 10px;font-size:13px;font-weight:900;margin-bottom:8px}
+</style>
+</head>
+<body>
+<div class="phone">
+  <div class="top">
+    <div class="avatar">AB</div>
+    <div>
+      <h1>AutoBro</h1>
+      <p>מסלול רכב · בלי ג׳רגון</p>
+    </div>
+  </div>
+  <div class="chat">
+    <div class="day">עכשיו · AutoBro</div>
+    <div class="bubble bot big">
+      <div class="code-badge">404</div>
+      <h2>הדף לא נמצא</h2>
+      <p>כמו תקלה בלי קוד — לא ברור מה קרה כאן. הקישור כנראה ישן, שגוי, או שהעמוד הועבר.</p>
+      <p style="margin-top:8px">אבל לא נבהלים. קוראים קוד, מחפשים סימן, וממשיכים.</p>
+      <div class="actions">
+        <a href="whatsapp-learning.html" class="primary">חזרה לשיחות</a>
+        <a href="index.html" class="secondary">דף הבית</a>
+      </div>
+      <small>איתי מהמוסך · עכשיו</small>
+    </div>
+    <div class="bubble bot" style="align-self:flex-start;max-width:78%">
+      <p>רוצה לחפש פרק ספציפי?</p>
+      <div class="actions" style="grid-template-columns:1fr">
+        <a href="whatsapp-learning.html#search" class="secondary">חיפוש בכל הפרקים</a>
+      </div>
+      <small>איתי מהמוסך · עכשיו</small>
+    </div>
+  </div>
+</div>
+</body>
+</html>
